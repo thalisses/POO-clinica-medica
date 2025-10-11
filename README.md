@@ -1,8 +1,11 @@
 ## Clinica médica
 
 CURSO: BACHARELADO EM INFORMÁTICA
+
 DISCIPLINA: PROGRAMAÇÃO ORIENTADA A OBJETOS
+
 PROFESSOR: MARCOS AURÉLIO DOMINGUES
+
 
 ### Resolvemos nesse trabalho o seguinte problema:
 
