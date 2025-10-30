@@ -15,22 +15,20 @@ public class Prontuario {
  
 	private int id;
 	private LocalDate dataAtendimento;
-	
-
-
+	private boolean receita;
 	private String sintomas;
-	 private String diagnostico;
-	 private String prescricaoTratamento;
+	private String diagnostico;
+	private String prescricaoTratamento;
+	
 
 
 	 public Prontuario(String sintomas, String diagnostico, String prescricaoTratamento) {
 	     this.dataAtendimento = LocalDate.now(); 
 	     this.sintomas = sintomas;
 	     this.diagnostico = diagnostico;
-	     this.prescricaoTratamento = prescricaoTratamento;
-	     
+	     this.prescricaoTratamento = prescricaoTratamento;  
 	 }
-
+	 
 
 
 	 public int getId() {
@@ -68,15 +66,25 @@ public class Prontuario {
 	 public String getPrescricaoTratamento() {
 	     return prescricaoTratamento;
 	 }
+	 public void setPrescricaoTratamento(String prescricaoTratamento) {
+		 this.prescricaoTratamento = prescricaoTratamento;
+	 }
+	
+	 public void setReceita(boolean receita) {
+		 this.receita = receita;
+	 }
+	 
+	 public boolean getReceita() {
+		 return receita;
+	 }
+	  
 	 @Override
 	 public String toString() {
-	     return "  Prontuário ID: " + id + " (Data: " + dataAtendimento + ")\n" +
+	     return "\n  Prontuário ID: " + id + " (Data: " + dataAtendimento + ")\n" +
 	            "    Sintomas: " + sintomas + '\n' +
 	            "    Diagnóstico: " + diagnostico + '\n' +
 	            "    Prescrição: " + prescricaoTratamento;
 	 }
-
-
 
 
 
