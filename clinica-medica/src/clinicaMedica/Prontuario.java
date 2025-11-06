@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package clinicaMedica;
+package trabalhopoo;
 
 /**
  *
@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 public class Prontuario {
 
- 
+
 	private int id;
 	private LocalDate dataAtendimento;
 	private boolean receita;
@@ -21,7 +21,10 @@ public class Prontuario {
 	private String prescricaoTratamento;
 	
 
-
+	/*
+	 * Metodo Construtor para 
+	 * classe Prontuario
+	 */
 	 public Prontuario(String sintomas, String diagnostico, String prescricaoTratamento) {
 	     this.dataAtendimento = LocalDate.now(); 
 	     this.sintomas = sintomas;
@@ -29,8 +32,12 @@ public class Prontuario {
 	     this.prescricaoTratamento = prescricaoTratamento;  
 	 }
 	 
-
-
+	 
+	 /*
+	  * Sets e Gets
+	  * para todos atributos
+	  * da classe Prontuario
+	  */
 	 public int getId() {
 	     return id;
 	 }
@@ -77,7 +84,12 @@ public class Prontuario {
 	 public boolean getReceita() {
 		 return receita;
 	 }
-	  
+	 
+	 /*
+	  * Metodo que retorna em formato String
+	  * todos os atributos e objetos da classe
+	  * Prontuario
+	  */
 	 @Override
 	 public String toString() {
 	     return "\n  Prontuário ID: " + id + " (Data: " + dataAtendimento + ")\n" +
@@ -85,7 +97,5 @@ public class Prontuario {
 	            "    Diagnóstico: " + diagnostico + '\n' +
 	            "    Prescrição: " + prescricaoTratamento;
 	 }
-
-
-
+	
 }

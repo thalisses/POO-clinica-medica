@@ -2,14 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package clinicaMedica;
+package trabalhopoo;
 
 /**
  *
  * @author User
  */
 public class InfoAdd {
-
+	
+	
 	private boolean fuma;
 	private boolean bebe;
 	private boolean colesterol;
@@ -22,7 +23,7 @@ public class InfoAdd {
 	
 	
 	
-	
+	// Construtor da Classe InfoAdd
 	public InfoAdd(boolean fuma, boolean bebe, boolean colesterol, boolean diabetes, boolean doencaCardiaca, String cirurgias, String alergia, String obsAdicionais) {
 		
 		this.fuma = fuma;
@@ -37,11 +38,16 @@ public class InfoAdd {
 		
 	}
 	
+	
 	InfoAdd() {
 		
 		
 	}
-	
+	/*
+	 * Sets e Gets
+	 * para atributos
+	 * da classe.
+	 */
 	public boolean getFuma() {
 		return fuma;
 	}
@@ -107,6 +113,10 @@ public class InfoAdd {
 		this.obsAdicionais = obsAdicionais;
 	}
 	
+	/*
+	 * Metodo que retorna em formato String
+	 * todos os atributos do objeto InfoAdd
+	 */
 	public String toString() {
 		
 		return "\n ---------------------" +

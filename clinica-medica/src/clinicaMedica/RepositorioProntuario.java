@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package clinicaMedica;
+package trabalhopoo;
 
 /**
  *
@@ -17,12 +17,17 @@ import java.util.List;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RepositorioProntuario {
 
+	// Lista de Prontuarios
 	private List<Prontuario> lista_prontuarios = new ArrayList<Prontuario>();
+	
 	private int ID = 1; 
 	
-	
+	// Construtor que inicia a lista de Prontuario
 	public RepositorioProntuario(){
 		
 		this.lista_prontuarios = new ArrayList<>();
@@ -30,7 +35,10 @@ public class RepositorioProntuario {
 	
 	
 	
-	
+	/*
+	 * Cadastra um prontuario para a lista e seta um ID
+	 * (chave primaria)
+	 */
 	public void cadastraProntuario(Prontuario prontuario) {
 		prontuario.setId(ID++);
 		lista_prontuarios.add(prontuario);
@@ -38,6 +46,10 @@ public class RepositorioProntuario {
 		
 	}
 
+	/*
+	 * Remove um prontuario da lista
+	 * pelo ID
+	 */
 	public void removeProntuario(int id){
 		
 		boolean remover = lista_prontuarios.removeIf(p -> p.getId() == id);
@@ -48,6 +60,10 @@ public class RepositorioProntuario {
 		
 	}
 	
+	/*
+	 * Atualiza um prontuario na lista
+	 * pelo ID
+	 */
 	public void atualizaProntuario(int id, String sintomas, String diagnosticos, String prescricao) {
 		Prontuario prontuarioAntigo = null;
 		for(Prontuario prontuario : lista_prontuarios) {
@@ -84,17 +100,23 @@ public class RepositorioProntuario {
 			if(mudancas) { System.out.println("Pronturario de ID: " + id + " Atualizado!"); }
 			
 			else { System.out.println("Prontuario nao atulizado! "); }
+				
+			
 			return;
 		}
-	
+		else {System.out.println("Prontuario de ID: " + id + " não encontrado");}
 		
 	}
 	
-	
+	//Retorna uma lista de prontuario
 	public List<Prontuario> getListaProntuario(){
 		return lista_prontuarios;
 	}
 	
+	/*
+	 * Metodo que retorna em forma de String 
+	 * uma lista de prontuario.
+	 */
 	public String toString() {
 		return "-------------------------" + 
 				"\nExibindo historio de Prontuarios..."+
