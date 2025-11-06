@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package clinicaMedica;
+package trabalhopoo;
 
 /**
  *
@@ -11,8 +11,6 @@ package clinicaMedica;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-
 
 public class Main {
 
@@ -45,10 +43,6 @@ public class Main {
                     String cpf = entrada.nextLine();
                     System.out.println("Data de nascimento: (dd/mm/aaaa)");
                     String nascimento = entrada.nextLine();
-                    System.out.println("Cidade");
-                    String endereco = entrada.nextLine();
-                    System.out.println("Telefone: ");
-                    String telefone = entrada.nextLine();
                     System.out.println("Plano: ");
                     String plano = entrada.nextLine();
                     
@@ -95,7 +89,13 @@ public class Main {
                     
                     // 3. Criamos o Paciente UMA ÚNICA VEZ, aqui fora do switch.
                     // Ele receberá o objeto 'informacoes' preenchido ou o valor 'null', dependendo da escolha do usuário.
-                    Paciente paciente = new Paciente(nome, cpf, nascimento, endereco, telefone, plano, informacoes);
+                    
+                    
+                    //SETANDO AUTOMATICO PARA TESTE
+                    Endereco endereco = new Endereco("rua das acacias", "456", "Liberdade", "Sao paulo", "Sao Paulo", "84323221");
+                    Contato contato = new Contato("44993552449", "439945367845", "PacienteQualquer@gmail.com");
+                    //criando paciente
+                    Paciente paciente = new Paciente(nome, cpf, nascimento, endereco, contato, plano, informacoes);
                     repositorioPacientes.put(cpf, paciente);
 
                     System.out.println("\n--- PACIENTE CADASTRADO ---");
@@ -146,7 +146,7 @@ public class Main {
 	                	System.out.println(armazem.buscaHistorico(cpf));
 	                	System.out.println("\nQual Prontuario deseja remover? (Digite o numero do 'ID')");
 	                	String idString = entrada.nextLine();
-                                if (idString.equalsIgnoreCase("")) {
+	                	if (idString.equalsIgnoreCase("")) {
 	                		System.out.println("ID invalido");
 	                		break;
 	                	}
@@ -165,16 +165,16 @@ public class Main {
 	                	System.out.println(armazem.buscaHistorico(cpf));
 	                	System.out.println("\nQual Prontuario deseja atualizar? (Digite o numero do 'ID')");
 	                	String idString = entrada.nextLine();
-                                if (idString.equalsIgnoreCase("")) {
+	                	if (idString.equalsIgnoreCase("")) {
 	                		System.out.println("ID invalido");
 	                		break;
 	                	}
 	                	int id = Integer.parseInt(idString);
-	                	System.out.println("Digite o sintoma: ");
+	                	System.out.println("Digite o sintoma:  ([ENTER] para pular)");
 	                	String sintomas = entrada.nextLine();
-	                	System.out.println("Digite o Diagnostico");
+	                	System.out.println("Digite o Diagnostico ([ENTER] para pular)");
 	                	String diagnostico = entrada.nextLine();
-	                	System.out.println("Digite a Prescricao");
+	                	System.out.println("Digite a Prescricao ([ENTER] para pular)");
 	                	String prescricao = entrada.nextLine();
 	                	armazem.getRepositorioPaciente(cpf).atualizaProntuario(id, sintomas, diagnostico, prescricao);
 	                	System.out.println(armazem.buscaHistorico(cpf));                    
