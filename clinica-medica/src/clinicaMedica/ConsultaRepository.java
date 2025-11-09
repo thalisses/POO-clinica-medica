@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package trabalhopoo;
+package clinicaMedica;
 
 /**
  *
@@ -40,6 +40,19 @@ public class ConsultaRepository {
         List<Consulta> resultado = new ArrayList<>();
         for (Consulta c : consultas) {
             if (c.getPacientes().getCpf().equals(cpf)) {
+                resultado.add(c);
+            }
+        }
+        return resultado;
+    }
+    
+    // Relatório de consultas do dia seguinte
+    public List<Consulta> relatorioProximoDia() {
+        List<Consulta> resultado = new ArrayList<>();
+        java.time.LocalDate amanha = java.time.LocalDate.now().plusDays(1);
+        
+        for (Consulta c : consultas) {
+            if (c.getData().toLocalDate().equals(amanha)) {
                 resultado.add(c);
             }
         }
