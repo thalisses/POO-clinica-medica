@@ -8,19 +8,39 @@ package clinicaMedica.Paciente;
  * Classe que representa o endereço de um paciente,
  * contendo informações como rua, número, bairro, cidade, estado e CEP.
  */
+
+import javax.persistence.*;
+
+@Entity 
+@Table(name = "tb_endereco")
 public class Endereco {
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id; 
+    
     /** Nome da rua do endereço */
+    @Column(nullable = false, length = 100)
     private String rua;
+    
     /** Número do endereço */
+    @Column(length = 10)
     private String numero;
+    
     /** Bairro do endereço */
+    @Column(length = 100)
     private String bairro;
+    
     /** Cidade do endereço */
+    @Column(nullable = false, length = 100)
     private String cidade;
+    
     /** Estado do endereço */
+    @Column(length = 50)
     private String estado;
+    
     /** CEP do endereço */
+    @Column(length = 15)
     private String cep;
 
     /**
