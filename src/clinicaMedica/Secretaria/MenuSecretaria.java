@@ -167,10 +167,22 @@ public class MenuSecretaria {
         System.out.print("Plano de saúde: ");
         String plano = entrada.nextLine();
 
+        System.out.print("Convenio (apenas números) { [1] Particular; [2] Plano de Saude}: " );
+        String convenio = entrada.nextLine();
+        
         Endereco endereco = new Endereco(rua, numero, bairro, cidade, estado, cep);
         Contato contato = new Contato(telefone, celular, email);
-        Paciente paciente = new Paciente(nome, cpf, nascimento, endereco, contato, plano, null);
-
+        
+        Paciente.tiposConvenios enumConvenio = null;
+        if(!convenio.isEmpty()){
+            if(convenio.equalsIgnoreCase("1")){
+                enumConvenio = Paciente.tiposConvenios.PARTICULARES;
+            }else if(convenio.equalsIgnoreCase("2")){
+                enumConvenio = Paciente.tiposConvenios.PLANO_DE_SAUDE;
+            }
+        }
+        
+        Paciente paciente = new Paciente(nome, cpf, nascimento, endereco, contato, enumConvenio, null, plano);
         repositorioPacientes.adicionarPaciente(paciente);
         System.out.println("✅ Paciente cadastrado com sucesso!");
     }
@@ -195,7 +207,59 @@ public class MenuSecretaria {
 
         System.out.print("Novo plano (Enter para manter): ");
         String plano = entrada.nextLine();
-        if (!plano.isEmpty()) paciente.setConvenio(plano);
+        if (!plano.isEmpty()) paciente.setPlano(plano);
+        
+        System.out.print("Novo Convenio { [1] Particular; [2] Plano de Saude} (Enter para manter):");
+        String convenio = entrada.nextLine();
+        
+       Paciente.tiposConvenios enumConvenio = null;
+        if(!convenio.isEmpty()){
+            if(convenio.equalsIgnoreCase("1")){
+                enumConvenio = Paciente.tiposConvenios.PARTICULARES;
+            }else if(convenio.equalsIgnoreCase("2")){
+                enumConvenio = Paciente.tiposConvenios.PLANO_DE_SAUDE;
+            }
+        }
+        
+        System.out.println("Novo Endereço: ");
+        
+        System.out.print("Rua (Enter para manter): ");
+        String rua = entrada.nextLine();
+        if(!rua.isEmpty()) paciente.getEndereco().setRua(rua);
+        
+        System.out.print("Número (Enter para manter): ");
+        String numero = entrada.nextLine();
+        if(!numero.isEmpty()) paciente.getEndereco().setNumero(numero);
+        
+        System.out.print("Bairro (Enter para manter): ");
+        String bairro = entrada.nextLine();
+        if(!numero.isEmpty()) paciente.getEndereco().setBairro(bairro);
+        
+        System.out.print("Cidade (Enter para manter): ");
+        String cidade = entrada.nextLine();
+        if(!cidade.isEmpty()) paciente.getEndereco().setCidade(cidade);
+        
+        System.out.print("Estado (Enter para manter): ");
+        String estado = entrada.nextLine();
+        if(!estado.isEmpty()) paciente.getEndereco().setEstado(estado);
+        
+        System.out.print("CEP (Enter para manter): ");
+        String cep = entrada.nextLine();
+        if(!cep.isEmpty()) paciente.getEndereco().setCep(cep);
+        
+        System.out.println("Novo contato Contato (Enter para manter): ");
+        
+        System.out.print("Telefone (Enter para manter): ");
+        String telefone = entrada.nextLine();
+        if(!telefone.isEmpty()) paciente.getContato().setTelefone(telefone);
+        
+        System.out.print("Celular (Enter para manter): ");
+        String celular = entrada.nextLine();
+        if(!celular.isEmpty()) paciente.getContato().setCelular(celular);
+        
+        System.out.print("Email (Enter para manter): ");
+        String email = entrada.nextLine();
+        if(!email.isEmpty()) paciente.getContato().setEmail(email);
 
         repositorioPacientes.atualizarPaciente(paciente);
         System.out.println("✅ Paciente atualizado com sucesso!");

@@ -8,9 +8,24 @@ package clinicaMedica.Paciente;
  *
  * @author User
  */
+
+import javax.persistence.*;
+
+@Entity 
+@Table(name = "tb_contato")
 public class Contato {
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    private Long id;
+    
+    @Column(length = 25)
     private String telefone;
+    
+    @Column(length = 25)
     private String celular;
+    
+    @Column(length = 100)
     private String email;
 
     public Contato(){}

@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package clinicaMedica.View;
+package clinicaMedica.Paciente;
 
-import clinicaMedica.Model.Paciente.Paciente;
-import clinicaMedica.Model.Paciente.PacienteRepository;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+
+import clinicaMedica.Secretaria.PainelSecretaria;
 
 /**
  *
