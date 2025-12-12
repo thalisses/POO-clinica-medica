@@ -4,7 +4,7 @@
  */
 package clinicaMedica.Paciente;
 
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -12,8 +12,7 @@ import java.util.List;
  */
 public class PacienteRepository {
     
-    /** Lista com todos os pacientes cadastrados */
-    private List<Paciente> pacientes;
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConsultorioPU");
 
     /** Instância única da classe (padrão Singleton) */
     private static PacienteRepository instancia;
@@ -30,18 +29,24 @@ public class PacienteRepository {
     }
 
     /**
-     * Construtor que inicializa a lista de pacientes.
+     * Construtor Vazio.
      */
-    public PacienteRepository() {
-        this.pacientes = new ArrayList<>();
-    }
+    public PacienteRepository() {}
 
     /**
      * Adiciona um novo paciente à lista.
      * @param paciente paciente a ser adicionado
      */
     public void adicionarPaciente(Paciente paciente) {
-        pacientes.add(paciente);
+        EntityManager em = emf.createEntityManager();
+        try{
+            em.getTransaction().begin();
+            em.persist(paciente);
+            em.getTransaction().commit();
+        }catch(Exception e){
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        }finally{em.close();}
     }
 
     /**
@@ -49,13 +54,15 @@ public class PacienteRepository {
      * @param paciente paciente atualizado
      */
     public void atualizarPaciente(Paciente paciente) {
-        for (int i = 0; i < pacientes.size(); i++) {
-            if (pacientes.get(i).getCpf().equals(paciente.getCpf())) {
-                pacientes.set(i, paciente);
-                return;
-            }
-        }
-        System.out.println("Paciente não encontrado!");
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(paciente);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        }finally{ em.close();}
     }
 
     /**
@@ -63,13 +70,24 @@ public class PacienteRepository {
      * @param cpf CPF do paciente a ser removido
      */
     public void removerPaciente(String cpf) {
-        String cpfFormatado = formatarCpf(cpf);
-        boolean removido = pacientes.removeIf(p -> p.getCpf() != null && p.getCpf().equals(cpfFormatado));
-
-        if (removido) {
-            System.out.println("Paciente removido do repositório.");
-        } else {
-            System.out.println("Paciente não encontrado no repositório.");
+        EntityManager em = emf.createEntityManager();
+        try {
+            
+            Paciente p = buscarPorCpfInternal(em, cpf);
+            
+            if (p != null) {
+                em.getTransaction().begin();
+                em.remove(p); 
+                em.getTransaction().commit();
+                System.out.println("Paciente removido com sucesso.");
+            } else {
+                System.out.println("Paciente não encontrado para remoção.");
+            }
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
         }
     }
 
@@ -78,7 +96,14 @@ public class PacienteRepository {
      * @return lista de pacientes
      */
     public List<Paciente> listarPacientes() {
-        return pacientes;
+        EntityManager em = emf.createEntityManager();
+        try {
+
+            TypedQuery<Paciente> query = em.createQuery("SELECT p FROM Paciente p", Paciente.class);
+            return query.getResultList(); 
+        } finally {
+            em.close();
+        }
     }
 
     /**
@@ -87,13 +112,24 @@ public class PacienteRepository {
      * @return paciente encontrado ou null se não existir
      */
     public Paciente buscarPorCpf(String cpf) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            return buscarPorCpfInternal(em, cpf);
+        }finally{em.close();}
+    }
+    
+    private Paciente buscarPorCpfInternal(EntityManager em, String cpf) {
         String cpfFormatado = formatarCpf(cpf);
-        for (Paciente p : pacientes) {
-            if (p.getCpf() != null && p.getCpf().equals(cpfFormatado)) {
-                return p;
-            }
+        try {
+            
+            TypedQuery<Paciente> query = em.createQuery(
+                "SELECT p FROM Paciente p WHERE p.cpf = :cpf", Paciente.class);
+            query.setParameter("cpf", cpfFormatado);
+            
+            return query.getSingleResult(); 
+        } catch (NoResultException e) {
+            return null; 
         }
-        return null;
     }
 
     /**

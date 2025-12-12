@@ -25,20 +25,25 @@ public class Endereco {
     /** Nome da rua do endereço */
     @Column(length = 100, nullable = false)
     private String rua;
+    
     /** Número do endereço */
     @Column(length = 20, nullable = false)
     private String numero;
+    
     /** Bairro do endereço */
     @Column(length = 50, nullable = false)
     private String bairro;
+    
     /** Cidade do endereço */
-    @Column(length = 50, nullable = false)
+    @Column(nullable = false, length = 100)
     private String cidade;
+    
     /** Estado do endereço */
-    @Column(length = 30, nullable = false)
+    @Column(length = 50)
     private String estado;
+    
     /** CEP do endereço */
-    @Column(length = 50, nullable = false)
+    @Column(length = 15)
     private String cep;
 
     /**

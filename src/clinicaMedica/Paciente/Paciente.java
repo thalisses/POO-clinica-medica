@@ -17,16 +17,20 @@ import javax.persistence.Table;
  * Classe que representa um paciente da clínica médica,
  * contendo informações pessoais, de contato, endereço e convênio.
  */
+import javax.persistence.*;
 
 @Entity
-@Table(name = "paciente")
+@Table(name= "tb_paciente")
 public class Paciente {
+    
+    
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     
     /** Nome completo do paciente */
-    @Column(length = 100, name = "NOME", nullable = false)
+    @Column(nullable = false)
     private String nome;
     
     /** CPF do paciente, armazenado no formato xxx.xxx.xxx-xx */
@@ -34,26 +38,31 @@ public class Paciente {
     private String cpf;
     
     /** Data de nascimento no formato dd/mm/yyyy */
-    @Column(length = 20, name = "DATANASC", nullable = false)
+    @Column(nullable = false)
     private String dataNascimento;
     
     /** Endereço do paciente */
-    @OneToOne(optional = false)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
     
     /** Contato do paciente (telefone e e-mail) */
-    @OneToOne(optional = false)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contato_id")
     private Contato contato;
     
     /** Tipo de convênio médico (particular ou plano de saúde) */
-    @Column(length = 100, name = "CONVENIO", nullable = false)
-    private String convenio;
+    @Enumerated(EnumType.STRING) 
+    @Column(length = 35)
+    private tiposConvenios convenio;
+    
+    
+    @Column(nullable = false)
+    private String plano;
     
     /** Informações adicionais de saúde do paciente */
-    @OneToOne(optional = true)
-    @JoinColumn(name = "info_add_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "infoAdd_id")
     private InfoAdd informacoesAdicionais;
  
     /**
@@ -61,6 +70,12 @@ public class Paciente {
      */
     public enum tiposConvenios { PARTICULARES, PLANO_DE_SAUDE; }
 
+    
+    /**
+     * Construtor padrão (vazio).
+     */
+    public Paciente() { }
+    
     /**
      * Construtor que inicializa um paciente com todos os atributos.
      * @param nome nome completo
@@ -71,7 +86,7 @@ public class Paciente {
      * @param convenio tipo de convênio
      * @param informacoesAdicionais informações adicionais de saúde
      */
-    public Paciente(String nome, String cpf, String dataNascimento, Endereco endereco, Contato contato, String convenio, InfoAdd informacoesAdicionais ) {
+    public Paciente(String nome, String cpf, String dataNascimento, Endereco endereco, Contato contato, tiposConvenios convenio, InfoAdd informacoesAdicionais, String plano ) {
         this.nome = nome;
         setCpf(cpf);
         setDataNascimento(dataNascimento);
@@ -79,6 +94,7 @@ public class Paciente {
         this.contato = contato;
         this.convenio = convenio;
         setInfoAdd(informacoesAdicionais);
+        setPlano(plano);
     }
     
     public Integer getId(){ 
@@ -157,14 +173,23 @@ public class Paciente {
     }
 
     /** @return tipo de convênio */
-    public String getConvenio() {
+    public tiposConvenios getConvenio() {
         return convenio;
     }
 
     /** @param convenio tipo de convênio */
-    public void setConvenio(String convenio) {
+    public void setConvenio(tiposConvenios convenio) {
         this.convenio = convenio;
     }
+    
+    public String getPlano(){
+        return plano;
+    }
+    
+    public void setPlano(String plano){
+        this.plano = plano;
+    }
+    
 
     /** @param informacoesAdicionais informações adicionais de saúde */
     public void setInfoAdd(InfoAdd informacoesAdicionais) {
