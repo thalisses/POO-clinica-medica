@@ -4,27 +4,58 @@
  */
 package clinicaMedica.Paciente;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * Classe que representa um paciente da clínica médica,
  * contendo informações pessoais, de contato, endereço e convênio.
  */
-public class Paciente {
 
-    /** Nome completo do paciente */
-    private String nome;
-    /** CPF do paciente, armazenado no formato xxx.xxx.xxx-xx */
-    private String cpf;
-    /** Data de nascimento no formato dd/mm/yyyy */
-    private String dataNascimento;
-    /** Endereço do paciente */
-    private Endereco endereco;
-    /** Contato do paciente (telefone e e-mail) */
-    private Contato contato;
-    /** Tipo de convênio médico (particular ou plano de saúde) */
-    private String convenio;
-    /** Informações adicionais de saúde do paciente */
-    private InfoAdd informacoesAdicionais;
+@Entity
+@Table(name = "paciente")
+public class Paciente {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     
+    /** Nome completo do paciente */
+    @Column(length = 100, name = "NOME", nullable = false)
+    private String nome;
+    
+    /** CPF do paciente, armazenado no formato xxx.xxx.xxx-xx */
+    @Column(nullable = false, unique = true)
+    private String cpf;
+    
+    /** Data de nascimento no formato dd/mm/yyyy */
+    @Column(length = 20, name = "DATANASC", nullable = false)
+    private String dataNascimento;
+    
+    /** Endereço do paciente */
+    @OneToOne(optional = false)
+    @JoinColumn(name = "endereco_id")
+    private Endereco endereco;
+    
+    /** Contato do paciente (telefone e e-mail) */
+    @OneToOne(optional = false)
+    @JoinColumn(name = "contato_id")
+    private Contato contato;
+    
+    /** Tipo de convênio médico (particular ou plano de saúde) */
+    @Column(length = 100, name = "CONVENIO", nullable = false)
+    private String convenio;
+    
+    /** Informações adicionais de saúde do paciente */
+    @OneToOne(optional = true)
+    @JoinColumn(name = "info_add_id")
+    private InfoAdd informacoesAdicionais;
+ 
     /**
      * Tipos de convênios aceitos pela clínica.
      */
@@ -49,7 +80,10 @@ public class Paciente {
         this.convenio = convenio;
         setInfoAdd(informacoesAdicionais);
     }
-
+    
+    public Integer getId(){ 
+        return id;
+    }
     /**
      * Construtor padrão (vazio).
      */
@@ -66,23 +100,7 @@ public class Paciente {
      * @param cpf CPF a ser formatado
      */
     public void setCpf(String cpf) {
-        if (cpf == null) {
-            this.cpf = null;
-            System.out.println("CPF nulo, impossível atribuir.");
-            return;
-        }
-
-        cpf = cpf.replaceAll("\\D", "");
-        if (cpf.length() != 11) {
-            this.cpf = null;
-            System.out.println("CPF inválido! impossível atribuir.");
-            return;
-        }
-
-        this.cpf = cpf.substring(0, 3) + "." +
-                   cpf.substring(3, 6) + "." +
-                   cpf.substring(6, 9) + "-" +
-                   cpf.substring(9, 11);
+        this.cpf = cpf;
     }
 
     /** @return nome do paciente */
@@ -216,28 +234,7 @@ public class Paciente {
      * @return string formatada com os dados do paciente
      */
     @Override
-    public String toString() {
-        if (informacoesAdicionais != null) {
-            return "\n------- Pacientes -------\n" +
-                    "\nNome = " + nome +
-                    "\nCpf = " + cpf +  
-                    "\nDataNascimento = " + dataNascimento +
-                    "\nEndereco = " + endereco +
-                    "\nNumeroCelular = " + contato.getCelular() +
-                    "\nConvenio = " + convenio + 
-                    "\nInformações adicionais encontradas!" + 
-                    "\n------- Fim -------\n" +
-                    getInfoAdd().toString();
-        } else {
-            return "\n------- Pacientes -------\n" +
-                    "\nNome = " + nome +
-                    "\nCpf = " + cpf +  
-                    "\nDataNascimento = " + dataNascimento +
-                    "\nEndereco = " + endereco +
-                    "\nNumeroCelular = " + contato.getCelular() +
-                    "\nConvenio = " + convenio + 
-                    "\nInformações adicionais não encontradas!" + 
-                    "\n------- Fim -------\n";
-        }
-    }
+public String toString() {
+    return nome;
+}
 }

@@ -4,20 +4,32 @@
  */
 package clinicaMedica.Paciente;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  *
  * @author User
  */
+@Entity
+@Table(name = "contato")
 public class Contato {
-    private String telefone;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(length = 15, nullable = false)
     private String celular;
+    @Column(length = 30, nullable = false)
     private String email;
 
     public Contato(){}
     
     //contrutor da classe Contato
-    public Contato(String telefone, String celular, String email) {
-        this.telefone = telefone;
+    public Contato(String celular, String email) {
         this.celular = celular;
         this.email = email;
     }
@@ -28,14 +40,6 @@ public class Contato {
      * da classe.
      */
     
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public String getCelular() {
         return celular;
     }
@@ -59,8 +63,7 @@ public class Contato {
     @Override
     public String toString() {
         return "Contato{" +
-                "telefone='" + telefone + '\'' +
-                ", celular='" + celular + '\'' +
+                "celular='" + celular + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

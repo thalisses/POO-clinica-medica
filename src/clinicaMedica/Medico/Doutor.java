@@ -6,27 +6,50 @@ package clinicaMedica.Medico;
 
 import clinicaMedica.Paciente.Contato;
 import clinicaMedica.Paciente.Paciente;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * Classe que representa um doutor no sistema da clínica.
  * Contém informações pessoais, profissionais e de contato do médico.
  */
+@Entity
+@Table(name = "medico")
 public class Doutor {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
+    @Column(length = 100, name = "NOME", nullable = false)
     /** Nome do doutor */
     private String nome;
-
+    
+    @Column(length = 20, name = "CPF", nullable = false)
     /** CPF do doutor */
     private String cpf;
-
+    
+    @Column(length = 20, name = "CRM", nullable = false)
     /** CRM (registro profissional) do doutor */
     private String crm;
-
+    
+    @Column(length = 30, name = "ESPECIALIDADE", nullable = false)
     /** Especialidade médica do doutor */
     private String especialidade;
-
+    
+    
     /** Contato do doutor */
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "contato_id")
     private Contato contato;
+
 
     /**
      * Construtor da classe Doutor.
@@ -36,6 +59,9 @@ public class Doutor {
      * @param especialidade especialidade médica
      * @param contato informações de contato
      */
+    
+    public Doutor(){}
+    
     public Doutor(String nome, String cpf, String crm, String especialidade, Contato contato) {
         this.nome = nome;
         this.cpf = cpf;
@@ -52,7 +78,11 @@ public class Doutor {
         System.out.println("Informações médicas de " + pacientes.getNome() + ":");
         System.out.println(pacientes.getInfoAdd().toString());
     }
-
+    
+    public Long getId(){
+        return id;
+    }
+    
     /** Retorna o nome do doutor. */
     public String getNome() {
         return nome;
@@ -108,13 +138,7 @@ public class Doutor {
      * @return informações do doutor em formato String
      */
     @Override
-    public String toString() {
-        return "Doutor{" +
-                "nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", crm='" + crm + '\'' +
-                ", especialidade='" + especialidade + '\'' +
-                ", contato=" + contato +
-                '}';
-    }
+public String toString() {
+    return nome + " (" + especialidade + ")";
+}
 }

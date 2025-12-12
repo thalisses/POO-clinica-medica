@@ -5,6 +5,11 @@
 package clinicaMedica.Consulta;
 
 
+import clinicaMedica.Medico.Doutor;
+import clinicaMedica.Paciente.Paciente;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,24 +24,31 @@ public class TelaCadastrar extends javax.swing.JFrame {
      */
     public TelaCadastrar() {
         initComponents();
-        JOptionPane.showMessageDialog(null, "Consulta cadastrada com sucesso");
-
+        carregarCombos();
     }
     
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {
-    // pegar os dados dos campos
-        //String nome = txtNome.getText();
-        //String cpf = txtCpf.getText();
-    // ...
+    private void carregarCombos() {
+    javax.persistence.EntityManager em =
+        javax.persistence.Persistence
+            .createEntityManagerFactory("clinica-medicaPU")
+            .createEntityManager();
 
-    // chamar lógica do sistema (sem banco por enquanto)
-        
-
-        JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
-
-        this.dispose(); 
-        //new TelaOpcoes().setVisible(true); // volta pra tela principal
+    // Carregar pacientes
+    java.util.List<Paciente> listaPacientes =
+            em.createQuery("FROM Paciente", Paciente.class).getResultList();
+    for (Paciente p : listaPacientes) {
+        jComboBox1.addItem(p);
     }
+
+    // Carregar médicos
+    java.util.List<Doutor> listaMedicos =
+            em.createQuery("FROM Doutor", Doutor.class).getResultList();
+    for (Doutor d : listaMedicos) {
+        jComboBox2.addItem(d);
+    }
+
+    em.close();
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -57,49 +69,184 @@ public class TelaCadastrar extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Cadastrar Consulta");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, -1, -1));
 
         jLabel2.setText("Data:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 50, -1, -1));
 
         jLabel3.setText("Horario:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, -1, -1));
 
         jLabel4.setText("Médico:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, -1, -1));
 
         jLabel5.setText("Paciente:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, -1, -1));
 
         jLabel6.setText("Tipo de consulta:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
 
         jButton1.setText("Salvar");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 250, -1, 30));
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, -1, -1));
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, -1, -1));
-        getContentPane().add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, -1, -1));
-        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, -1, -1));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.setText("dd/mm/aaaa");
+        jTextField1.setToolTipText("");
+
+        jTextField2.setText("digite um horario");
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Normal");
-        getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 210, -1, -1));
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Retorno");
-        getContentPane().add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 210, -1, -1));
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(jLabel1))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel2)
+                .addGap(33, 33, 33)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel3)
+                .addGap(17, 17, 17)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel6)
+                .addGap(9, 9, 9)
+                .addComponent(jRadioButton1)
+                .addGap(7, 7, 7)
+                .addComponent(jRadioButton2))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(jButton1))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2))
+                .addGap(19, 19, 19)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    String textoData = jTextField1.getText();
+    String textoHora = jTextField2.getText();
+    
+    Paciente paciente = (Paciente) jComboBox1.getSelectedItem();
+    Doutor medico = (Doutor) jComboBox2.getSelectedItem();
+
+    boolean normal = jRadioButton1.isSelected();
+    boolean retorno = jRadioButton2.isSelected();
+    // chamar lógica do sistema (sem banco por enquanto)
+        
+        if (textoData.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Informe a data");
+            return;
+        }
+        
+        if (textoHora.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Informe a hora");
+            return;
+        }
+        
+        if (medico == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um medico");
+            return;
+        }
+        
+        if (paciente == null) {
+            JOptionPane.showMessageDialog(this, "Selecione um paciente");
+            return;
+        }
+        
+        if (!normal && !retorno) {
+            JOptionPane.showMessageDialog(this, "Selecione o tipo da consulta");
+            return;
+        }
+        
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate data;
+        try {
+            data = LocalDate.parse(textoData, df);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Data inválida");
+            return;
+        }
+        
+        DateTimeFormatter hf = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime hora;
+        try {
+            hora = LocalTime.parse(textoHora, hf);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Horário inválido");
+        return;
+        }
+        
+        Consulta.TipoConsulta tipo;
+        if (jRadioButton1.isSelected()) {
+            tipo = Consulta.TipoConsulta.NORMAL;
+        }   
+        else {
+            tipo = Consulta.TipoConsulta.RETORNO;
+        }
+        
+        Consulta consulta;
+        consulta = new Consulta(data, hora, medico, paciente, tipo);
+                
+        new ConsultaService().cadastrar(consulta);
+        JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
+        this.dispose(); 
+        //new TelaOpcoes().setVisible(true); // volta pra tela principal
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -108,6 +255,8 @@ public class TelaCadastrar extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<Paciente> jComboBox1;
+    private javax.swing.JComboBox<Doutor> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -118,7 +267,5 @@ public class TelaCadastrar extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }
