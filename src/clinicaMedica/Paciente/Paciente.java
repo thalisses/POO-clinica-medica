@@ -4,6 +4,15 @@
  */
 package clinicaMedica.Paciente;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 /**
  * Classe que representa um paciente da clínica médica,
  * contendo informações pessoais, de contato, endereço e convênio.
@@ -55,7 +64,7 @@ public class Paciente {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "infoAdd_id")
     private InfoAdd informacoesAdicionais;
-    
+ 
     /**
      * Tipos de convênios aceitos pela clínica.
      */
@@ -87,16 +96,15 @@ public class Paciente {
         setInfoAdd(informacoesAdicionais);
         setPlano(plano);
     }
+    
+    public Integer getId(){ 
+        return id;
+    }
+    /**
+     * Construtor padrão (vazio).
+     */
+    public Paciente() { }
 
-    // gets e set para o ID
-    public Long getId() { 
-        return id; 
-    }
-    public void setId(Long id) {
-        this.id = id; 
-    }
-    
-    
     /** @return CPF do paciente */
     public String getCpf() {
         return cpf;
@@ -108,23 +116,7 @@ public class Paciente {
      * @param cpf CPF a ser formatado
      */
     public void setCpf(String cpf) {
-        if (cpf == null) {
-            this.cpf = null;
-            System.out.println("CPF nulo, impossível atribuir.");
-            return;
-        }
-
-        cpf = cpf.replaceAll("\\D", "");
-        if (cpf.length() != 11) {
-            this.cpf = null;
-            System.out.println("CPF inválido! impossível atribuir.");
-            return;
-        }
-
-        this.cpf = cpf.substring(0, 3) + "." +
-                   cpf.substring(3, 6) + "." +
-                   cpf.substring(6, 9) + "-" +
-                   cpf.substring(9, 11);
+        this.cpf = cpf;
     }
 
     /** @return nome do paciente */
@@ -267,28 +259,7 @@ public class Paciente {
      * @return string formatada com os dados do paciente
      */
     @Override
-    public String toString() {
-        if (informacoesAdicionais != null) {
-            return "\n------- Pacientes -------\n" +
-                    "\nNome = " + nome +
-                    "\nCpf = " + cpf +  
-                    "\nDataNascimento = " + dataNascimento +
-                    "\nEndereco = " + endereco +
-                    "\nNumeroCelular = " + contato.getCelular() +
-                    "\nConvenio = " + convenio + 
-                    "\nInformações adicionais encontradas!" + 
-                    "\n------- Fim -------\n" +
-                    getInfoAdd().toString();
-        } else {
-            return "\n------- Pacientes -------\n" +
-                    "\nNome = " + nome +
-                    "\nCpf = " + cpf +  
-                    "\nDataNascimento = " + dataNascimento +
-                    "\nEndereco = " + endereco +
-                    "\nNumeroCelular = " + contato.getCelular() +
-                    "\nConvenio = " + convenio + 
-                    "\nInformações adicionais não encontradas!" + 
-                    "\n------- Fim -------\n";
-        }
-    }
+public String toString() {
+    return nome;
+}
 }

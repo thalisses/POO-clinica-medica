@@ -5,9 +5,9 @@
 package clinicaMedica.Medico;
 
 import clinicaMedica.Medico.Doutor;
-import clinicaMedica.Consulta.ConsultaRepository;
 import clinicaMedica.Consulta.Consulta;
 import clinicaMedica.Paciente.Paciente;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class Receita {
         List<Consulta> todasAsConsultas = listaConsulta.listarConsultas();
 
         for (Consulta consulta : todasAsConsultas) {
-            LocalDateTime dataConsulta = consulta.getData();
+            LocalDate dataConsulta = consulta.getData();
 
             boolean mesmoDoutor = consulta.getMedico().equals(medico);
             boolean mesmoAno = dataConsulta.getYear() == ano;

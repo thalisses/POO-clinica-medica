@@ -4,6 +4,8 @@
  */
 package clinicaMedica.Consulta;
 
+import clinicaMedica.Medico.Doutor;
+import clinicaMedica.Paciente.Paciente;
 import java.awt.CardLayout;
 
 /**
@@ -18,15 +20,24 @@ public class TelaAtualizar extends javax.swing.JFrame {
 
     public TelaAtualizar() {
         initComponents();  // cria o containerPanel
-
         initCards();       // adiciona seus painéis ao CardLayout
     }
+    
+    
+    public void mostrarTela(String nome) {
+        CardLayout cl = (CardLayout) containerPanel.getLayout();
+        cl.show(containerPanel, nome);
+    }
+    
+    public PanelSelecionarPaciente getTela1() { return tela1; }
+    public PanelSelecionarConsulta getTela2() { return tela2; }
+    public PanelEditarConsulta getTela3() { return tela3; }
 
     private void initCards() {
         // instanciar paineis
-        tela1 = new PanelSelecionarPaciente();
-        tela2 = new PanelSelecionarConsulta();
-        tela3 = new PanelEditarConsulta();
+        tela1 = new PanelSelecionarPaciente(this);
+        tela2 = new PanelSelecionarConsulta(this);
+        tela3 = new PanelEditarConsulta(this);
 
         // aplicar cardlayout no container
         CardLayout cl = new CardLayout();
@@ -36,7 +47,10 @@ public class TelaAtualizar extends javax.swing.JFrame {
         containerPanel.add(tela1, "selecionarPaciente");
         containerPanel.add(tela2, "selecionarConsulta");
         containerPanel.add(tela3, "editarConsulta");
+        mostrarTela("selecionarPaciente");
+    
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

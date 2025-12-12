@@ -5,17 +5,42 @@
 
 package clinicaMedica.Consulta;
 
+import clinicaMedica.Paciente.Paciente;
+import java.util.List;
+
 /**
  *
  * @author User
  */
 public class PanelSelecionarConsulta extends javax.swing.JPanel {
 
-    /** Creates new form SelecionarConsulta */
-    public PanelSelecionarConsulta() {
-        initComponents();
+    public void carregarConsultas(List<Consulta> consultas){
+        jComboBox1.removeAllItems();
+        for (Consulta c : consultas) jComboBox1.addItem(c);
+    }
+    
+    public Consulta getConsultaSelecionada(){
+        return (Consulta) jComboBox1.getSelectedItem();
+    }
+    
+    private TelaAtualizar telaAtualizar;
+    
+    public void carregarConsultasDoPaciente(Paciente p) {
+        List<Consulta> lista = new ConsultaService().listarPorPaciente(p.getId());
+
+        jComboBox1.removeAllItems();
+        for (Consulta c : lista) {
+            jComboBox1.addItem(c);
+        }
+    }
+    public void setPaciente(Paciente p) {
+        carregarConsultasDoPaciente(p);
     }
 
+    public PanelSelecionarConsulta(TelaAtualizar tela){
+        this.telaAtualizar = tela;
+        initComponents();
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -25,20 +50,60 @@ public class PanelSelecionarConsulta extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
+
+        jLabel1.setText("Selecionar Consulta");
+
+        jButton2.setText("Avancar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton2)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        Consulta selecionada = getConsultaSelecionada();
+        telaAtualizar.getTela3().setConsultaOriginal(selecionada);
+        telaAtualizar.mostrarTela("editarConsulta");
+            // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<Consulta> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 
 }

@@ -6,13 +6,24 @@ package clinicaMedica.Paciente;
 
 import static clinicaMedica.Medico.MenuMedico.FormataResposta;
 import java.util.Scanner;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * Classe que representa informações adicionais de saúde de um paciente,
  * como hábitos, doenças, cirurgias e observações.
  */
+@Entity
+@Table(name = "info_add")
 public class InfoAdd {
-	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     /** Indica se o paciente fuma */
     private boolean fuma;
     /** Indica se o paciente bebe */
@@ -24,10 +35,13 @@ public class InfoAdd {
     /** Indica se o paciente possui doenças cardíacas */
     private boolean doencaCardiaca;
     /** Descrição de cirurgias realizadas */
+    @Column(length = 200)
     private String cirurgias;
     /** Descrição de alergias do paciente */
+    @Column(length = 200)
     private String alergia;
     /** Observações adicionais sobre o paciente */
+    @Column(length = 200)
     private String obsAdicionais;
 	
     /**
@@ -55,8 +69,12 @@ public class InfoAdd {
     /**
      * Construtor padrão (vazio).
      */
-    InfoAdd() { }
-
+    public InfoAdd() { }
+    
+    public Long getId(){
+        return id;
+    }
+    
     /** @return true se o paciente fuma */
     public boolean getFuma() { return fuma; }
 
