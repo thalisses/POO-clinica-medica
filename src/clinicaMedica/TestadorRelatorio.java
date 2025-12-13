@@ -4,14 +4,14 @@
  */
 package clinicaMedica;
 
-import clinicaMedica.Medico.Receita;
-import clinicaMedica.Medico.Doutor;
-import clinicaMedica.Consulta.ConsultaRepository;
-import clinicaMedica.Consulta.Consulta;
-import clinicaMedica.Paciente.InfoAdd;
-import clinicaMedica.Paciente.Endereco;
-import clinicaMedica.Paciente.Contato;
-import clinicaMedica.Paciente.Paciente;
+import clinicaMedica.Model.Medico.Receita;
+import clinicaMedica.Model.Medico.Doutor;
+import clinicaMedica.Model.Consulta.ConsultaRepository;
+import clinicaMedica.Model.Consulta.Consulta;
+import clinicaMedica.Model.Paciente.InfoAdd;
+import clinicaMedica.Model.Paciente.Endereco;
+import clinicaMedica.Model.Paciente.Contato;
+import clinicaMedica.Model.Paciente.Paciente;
 import java.time.LocalDateTime;
 
 /**
@@ -42,11 +42,11 @@ public class TestadorRelatorio {
         Endereco endereco1 = new Endereco("rua das acacias", "456", "Liberdade", "Sao paulo", "Sao Paulo", "84323221");
         Contato contato3 = new Contato("44993552449", "439945367845", "PacienteQualquer@gmail.com");
         InfoAdd informacao = new InfoAdd(true, false, true, true, false, "bariatrica", "amendoin", "nao possui");
-
-        Paciente pacienteUm = new Paciente("Maria", "11111111111", "12111970", endereco1, contato3, "Prever", informacao);
-        Paciente pacienteDois = new Paciente("Carlos", "11111111111", "12111970", endereco1, contato3, "Prever", informacao);
-        Paciente pacienteTres = new Paciente("Pedro", "11111111111", "12111970", endereco1, contato3, "Prever", informacao);
-        Paciente pacienteQuatro = new Paciente("Ivone", "11111111111", "12111970", endereco1, contato3, "Prever", informacao);
+        Paciente.tiposConvenios enumConvenio = null;
+        Paciente pacienteUm = new Paciente("Maria", "11111111111", "12111970", endereco1, contato3,enumConvenio, informacao, "Prever");
+        Paciente pacienteDois = new Paciente("Carlos", "11111111111", "12111970", endereco1, contato3,enumConvenio.PARTICULARES, informacao, "Prever");
+        Paciente pacienteTres = new Paciente("Pedro", "11111111111", "12111970", endereco1, contato3, enumConvenio.PARTICULARES, informacao, "Prever");
+        Paciente pacienteQuatro = new Paciente("Ivone", "11111111111", "12111970", endereco1, contato3, enumConvenio.PARTICULARES,informacao, "Prever");
 
         ConsultaRepository repositorioConsultas = new ConsultaRepository();
 

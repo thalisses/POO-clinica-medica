@@ -9,11 +9,11 @@ package clinicaMedica;
  * @author User
  */
 
-import clinicaMedica.Consulta.Consulta;
-import clinicaMedica.Consulta.ConsultaRepository;
-import clinicaMedica.Paciente.Contato;
-import clinicaMedica.Paciente.Paciente;
-import clinicaMedica.Paciente.PacienteRepository;
+import clinicaMedica.Model.Consulta.Consulta;
+import clinicaMedica.Model.Consulta.ConsultaRepository;
+import clinicaMedica.Model.Paciente.Contato;
+import clinicaMedica.Model.Paciente.Paciente;
+import clinicaMedica.Model.Paciente.PacienteRepository;
     import java.time.LocalDate;
 import java.util.List;
 

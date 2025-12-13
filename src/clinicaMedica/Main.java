@@ -4,20 +4,20 @@
  */
 package clinicaMedica;
 
-import clinicaMedica.Mensagem.GerenciadorMensagens;
-import clinicaMedica.Consulta.ConsultaRepository;
-import clinicaMedica.Medico.MenuMedico;
-import clinicaMedica.Medico.RepositorioProntuario;
-import clinicaMedica.Medico.Prontuario;
-import clinicaMedica.Mensagem.Email;
-import clinicaMedica.Mensagem.SMS;
-import clinicaMedica.Paciente.InfoAdd;
-import clinicaMedica.Paciente.Endereco;
-import clinicaMedica.Paciente.Contato;
-import clinicaMedica.Paciente.ArmazemHistoricoPaciente;
-import clinicaMedica.Paciente.Paciente;
-import clinicaMedica.Paciente.PacienteRepository;
-import clinicaMedica.Secretaria.MenuSecretaria;
+import clinicaMedica.Model.Mensagem.GerenciadorMensagens;
+import clinicaMedica.Model.Consulta.ConsultaRepository;
+import clinicaMedica.Model.Medico.MenuMedico;
+import clinicaMedica.Model.Medico.RepositorioProntuario;
+import clinicaMedica.Model.Medico.Prontuario;
+import clinicaMedica.Model.Mensagem.Email;
+import clinicaMedica.Model.Mensagem.SMS;
+import clinicaMedica.Model.Paciente.InfoAdd;
+import clinicaMedica.Model.Paciente.Endereco;
+import clinicaMedica.Model.Paciente.Contato;
+import clinicaMedica.Model.Paciente.ArmazemHistoricoPaciente;
+import clinicaMedica.Model.Paciente.Paciente;
+import clinicaMedica.Model.Paciente.PacienteRepository;
+import clinicaMedica.Model.Secretaria.MenuSecretaria;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
