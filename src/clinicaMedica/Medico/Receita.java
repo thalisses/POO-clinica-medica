@@ -6,6 +6,7 @@ package clinicaMedica.Medico;
 
 import clinicaMedica.Medico.Doutor;
 import clinicaMedica.Consulta.Consulta;
+import clinicaMedica.Consulta.ConsultaRepository;
 import clinicaMedica.Paciente.Paciente;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

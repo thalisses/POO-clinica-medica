@@ -4,6 +4,14 @@
  */
 package clinicaMedica.Consulta;
 
+import clinicaMedica.Paciente.Contato;
+import java.time.LocalDate;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author User
@@ -13,9 +21,10 @@ public class TelaGerenciarRelatorio extends javax.swing.JFrame {
     /**
      * Creates new form TelaGerenciarRelatorio
      */
+    private EntityManager em;
     public TelaGerenciarRelatorio() {
         initComponents();
-    }
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("clinica-medicaPU"); em = emf.createEntityManager(); }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,5 +87,11 @@ public class TelaGerenciarRelatorio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }

@@ -11,13 +11,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
 import javax.persistence.Table;
 
 /**
  * Classe que representa um paciente da clínica médica,
  * contendo informações pessoais, de contato, endereço e convênio.
  */
-import javax.persistence.*;
 
 @Entity
 @Table(name= "tb_paciente")
@@ -27,13 +29,13 @@ public class Paciente {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     
     /** Nome completo do paciente */
     @Column(nullable = false)
     private String nome;
     
-    /** CPF do paciente, armazenado no formato xxx.xxx.xxx-xx */
+    /** CPF do paciente, armazenado sem formatação (apenas dígitos) */
     @Column(nullable = false, unique = true)
     private String cpf;
     
@@ -96,14 +98,22 @@ public class Paciente {
         setInfoAdd(informacoesAdicionais);
         setPlano(plano);
     }
+
+    // Backwards-compatible constructor used by some test/console code
+    public Paciente(String nome, String cpf, String dataNascimento, Endereco endereco, Contato contato, String plano, InfoAdd informacoesAdicionais) {
+        this.nome = nome;
+        setCpf(cpf);
+        setDataNascimento(dataNascimento);
+        this.endereco = endereco;
+        this.contato = contato;
+        this.convenio = null;
+        setInfoAdd(informacoesAdicionais);
+        setPlano(plano);
+    }
     
-    public Integer getId(){ 
+    public Long getId(){ 
         return id;
     }
-    /**
-     * Construtor padrão (vazio).
-     */
-    public Paciente() { }
 
     /** @return CPF do paciente */
     public String getCpf() {
@@ -116,7 +126,13 @@ public class Paciente {
      * @param cpf CPF a ser formatado
      */
     public void setCpf(String cpf) {
-        this.cpf = cpf;
+        if (cpf == null) {
+            this.cpf = null;
+            return;
+        }
+        // Armazena apenas os dígitos do CPF (ex: 01234567890)
+        String onlyDigits = cpf.replaceAll("\\D", "");
+        this.cpf = onlyDigits;
     }
 
     /** @return nome do paciente */
@@ -231,12 +247,13 @@ public class Paciente {
      * @return data formatada ou null se inválida
      */
     public String converterNascimento(String nascimento) {
-        if (nascimento.length() != 8) {
-            return null;
-        }
-        return nascimento.substring(0, 2) + "/" + 
-               nascimento.substring(2, 4) + "/" + 
-               nascimento.substring(4, 8);
+        if (nascimento == null) return null;
+        // Aceita formatos com ou sem separadores, ex: "ddMMyyyy" ou "dd/MM/yyyy"
+        String onlyDigits = nascimento.replaceAll("\\D", "");
+        if (onlyDigits.length() != 8) return null;
+        return onlyDigits.substring(0, 2) + "/" +
+               onlyDigits.substring(2, 4) + "/" +
+               onlyDigits.substring(4, 8);
     }
 
     /**
@@ -245,13 +262,15 @@ public class Paciente {
      * @return CPF formatado ou null se inválido
      */
     public String converterCpf(String cpfInicial) {
-        if (cpf == null || !cpf.matches("\\d{11}")) {
+        if (cpfInicial == null) return null;
+        String onlyDigits = cpfInicial.replaceAll("\\D", "");
+        if (!onlyDigits.matches("\\d{11}")) {
             return null;
         }
-        return cpf.substring(0, 3) + "." +
-               cpf.substring(3, 6) + "." +
-               cpf.substring(6, 9) + "-" +
-               cpf.substring(9, 11);
+        return onlyDigits.substring(0, 3) + "." +
+               onlyDigits.substring(3, 6) + "." +
+               onlyDigits.substring(6, 9) + "-" +
+               onlyDigits.substring(9, 11);
     }
 
     /**

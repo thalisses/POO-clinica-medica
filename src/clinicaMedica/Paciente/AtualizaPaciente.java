@@ -425,49 +425,48 @@ public class AtualizaPaciente extends javax.swing.JPanel {
     }//GEN-LAST:event_tipoConvenioBoxActionPerformed
 
     private void buscarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarButtonActionPerformed
-        
-    String cpf = buscarButton.getText();
-    
-    if (cpf.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Digite um CPF para buscar.");
-        return;
-    }
-    
-    PacienteRepository repositorio = PacienteRepository.getInstancia();
-    pacienteEmEdicao = repositorio.buscarPorCpf(cpf);
-    
-    if (pacienteEmEdicao == null) {
-        JOptionPane.showMessageDialog(this, "Paciente não encontrado!");
-        limparCampos();
-        return;
-    }
-    
-    campoNvNome.setText(pacienteEmEdicao.getNome());
-    
-    
-    campoNvCPF.setEditable(false);
+        String cpf = campoNvCPF.getText().trim();
 
-    
-    if (pacienteEmEdicao.getEndereco() != null) {
-        campoNvRua.setText(pacienteEmEdicao.getEndereco().getRua());
-        campoNvNumero.setText(pacienteEmEdicao.getEndereco().getNumero());
-        campoNvBairro.setText(pacienteEmEdicao.getEndereco().getBairro());
-        campoNvCidade.setText(pacienteEmEdicao.getEndereco().getCidade());
-        campoNvEstado.setText(pacienteEmEdicao.getEndereco().getEstado());
-        campoNvCEP.setText(pacienteEmEdicao.getEndereco().getCep());
-    }
+        if (cpf.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Digite um CPF para buscar.");
+            return;
+        }
 
-    // Contato
-    if (pacienteEmEdicao.getContato() != null) {
-        campoNvCelular.setText(pacienteEmEdicao.getContato().getCelular());
-        campoNvTelefone.setText(pacienteEmEdicao.getContato().getTelefone());
-        campoNvEmail.setText(pacienteEmEdicao.getContato().getEmail());
-    }
+        PacienteRepository repositorio = PacienteRepository.getInstancia();
+        pacienteEmEdicao = repositorio.buscarPorCpf(cpf);
 
-    // Convênio (Selecionar o item certo no Combo)
-    if (pacienteEmEdicao.getConvenio() != null) {
-        tipoConvenioBox.setSelectedItem(pacienteEmEdicao.getConvenio());
-    }
+        if (pacienteEmEdicao == null) {
+            JOptionPane.showMessageDialog(this, "Paciente não encontrado!");
+            limparCampos();
+            return;
+        }
+
+        // Preencha os campos com os dados do paciente
+        campoNvNome.setText(pacienteEmEdicao.getNome());
+        campoNvCPF.setText(pacienteEmEdicao.getCpf());
+        campoNvCPF.setEditable(false);
+        campoNvPlano.setText(pacienteEmEdicao.getPlano() == null ? "" : pacienteEmEdicao.getPlano());
+
+        if (pacienteEmEdicao.getEndereco() != null) {
+            campoNvRua.setText(pacienteEmEdicao.getEndereco().getRua());
+            campoNvNumero.setText(pacienteEmEdicao.getEndereco().getNumero());
+            campoNvBairro.setText(pacienteEmEdicao.getEndereco().getBairro());
+            campoNvCidade.setText(pacienteEmEdicao.getEndereco().getCidade());
+            campoNvEstado.setText(pacienteEmEdicao.getEndereco().getEstado());
+            campoNvCEP.setText(pacienteEmEdicao.getEndereco().getCep());
+        }
+
+        // Contato
+        if (pacienteEmEdicao.getContato() != null) {
+            campoNvCelular.setText(pacienteEmEdicao.getContato().getCelular());
+            campoNvTelefone.setText(pacienteEmEdicao.getContato().getTelefone());
+            campoNvEmail.setText(pacienteEmEdicao.getContato().getEmail());
+        }
+
+        // Convênio (Selecionar o item certo no Combo)
+        if (pacienteEmEdicao.getConvenio() != null) {
+            tipoConvenioBox.setSelectedItem(pacienteEmEdicao.getConvenio());
+        }
         
 
 

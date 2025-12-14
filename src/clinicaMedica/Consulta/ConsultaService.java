@@ -46,11 +46,10 @@ public class ConsultaService {
         return lista;
     }
 
-    public List<Consulta> listarPorPaciente(int pacienteId) {
+    public List<Consulta> listarPorPaciente(Long pacienteId) {
         EntityManager em = emf.createEntityManager();
         List<Consulta> lista =
-            em.createQuery("SELECT c FROM Consulta c WHERE c.paciente.id = :id",
-                            Consulta.class)
+            em.createQuery("SELECT c FROM Consulta c WHERE c.pacientes.id = :id", Consulta.class)
               .setParameter("id", pacienteId)
               .getResultList();
         em.close();

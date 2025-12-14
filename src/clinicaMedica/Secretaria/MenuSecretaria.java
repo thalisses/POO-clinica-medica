@@ -5,7 +5,7 @@
 package clinicaMedica.Secretaria;
 
 import clinicaMedica.Consulta.Consulta;
-import clinicaMedica.Consulta.Consulta.typo;
+import clinicaMedica.Consulta.Consulta.TipoConsulta;
 import clinicaMedica.Consulta.ConsultaRepository;
 import clinicaMedica.Medico.Doutor;
 import clinicaMedica.Paciente.Contato;
@@ -321,13 +321,14 @@ public class MenuSecretaria {
         String dataStr = entrada.nextLine();
         System.out.print("Horário da consulta (hh:mm): ");
         String horaStr = entrada.nextLine();
-        LocalDateTime data = LocalDateTime.parse(dataStr + "T" + horaStr);
+    java.time.LocalDate data = java.time.LocalDate.parse(dataStr);
+    java.time.LocalTime hora = java.time.LocalTime.parse(horaStr);
 
-        System.out.print("Tipo da consulta (1 - NORMAL | 2 - RETORNO): ");
-        String tipoStr = entrada.nextLine();
-        Consulta.typo tipo = tipoStr.equals("2") ? Consulta.typo.RETORNO : Consulta.typo.NORMAL;
+    System.out.print("Tipo da consulta (1 - NORMAL | 2 - RETORNO): ");
+    String tipoStr = entrada.nextLine();
+    Consulta.TipoConsulta tipo = tipoStr.equals("2") ? Consulta.TipoConsulta.RETORNO : Consulta.TipoConsulta.NORMAL;
 
-        Consulta consulta = new Consulta(data, data, medico, paciente, tipo);
+    Consulta consulta = new Consulta(data, hora, medico, paciente, tipo);
         repositorioConsultas.adicionarConsulta(consulta);
         System.out.println("✅ Consulta cadastrada com sucesso!");
     }
@@ -345,9 +346,9 @@ public class MenuSecretaria {
                 String novoTipo = entrada.nextLine();
 
                 if (novoTipo.equals("1")) {
-                    c.setTipoConsulta(typo.NORMAL);
+                    c.setTipoConsulta(TipoConsulta.NORMAL);
                 } else if (novoTipo.equals("2")) {
-                    c.setTipoConsulta(typo.RETORNO);
+                    c.setTipoConsulta(TipoConsulta.RETORNO);
                 } else {
                     System.out.println("Tipo inválido! Mantendo tipo atual.");
                 }

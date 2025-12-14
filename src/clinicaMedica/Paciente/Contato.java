@@ -22,6 +22,8 @@ public class Contato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 15, nullable = false)
+    private String telefone;
+    @Column(length = 15, nullable = false)
     private String celular;
     @Column(length = 30, nullable = false)
     private String email;
@@ -30,6 +32,13 @@ public class Contato {
     
     //contrutor da classe Contato
     public Contato(String celular, String email) {
+        this.celular = celular;
+        this.email = email;
+    }
+
+    // overload with telefone (some UI code uses three-arg constructor)
+    public Contato(String telefone, String celular, String email) {
+        this.telefone = telefone;
         this.celular = celular;
         this.email = email;
     }
@@ -42,6 +51,14 @@ public class Contato {
     
     public String getCelular() {
         return celular;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
     public void setCelular(String celular) {

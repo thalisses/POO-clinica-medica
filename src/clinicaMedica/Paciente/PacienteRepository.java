@@ -12,7 +12,8 @@ import java.util.List;
  */
 public class PacienteRepository {
     
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConsultorioPU");
+    // Use the persistence-unit name declared in src/META-INF/persistence.xml
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("clinica-medicaPU");
 
     /** Instância única da classe (padrão Singleton) */
     private static PacienteRepository instancia;
@@ -119,16 +120,38 @@ public class PacienteRepository {
     }
     
     private Paciente buscarPorCpfInternal(EntityManager em, String cpf) {
-        String cpfFormatado = formatarCpf(cpf);
+        if (cpf == null) return null;
+        String onlyDigits = cpf.replaceAll("\\D", "");
+        String formatted = null;
+        if (onlyDigits.length() == 11) {
+            formatted = onlyDigits.substring(0, 3) + "." +
+                        onlyDigits.substring(3, 6) + "." +
+                        onlyDigits.substring(6, 9) + "-" +
+                        onlyDigits.substring(9, 11);
+        }
+
+        // Try multiple forms to be tolerant with existing DB values (digits-only, formatted, original)
         try {
-            
             TypedQuery<Paciente> query = em.createQuery(
                 "SELECT p FROM Paciente p WHERE p.cpf = :cpf", Paciente.class);
-            query.setParameter("cpf", cpfFormatado);
-            
-            return query.getSingleResult(); 
-        } catch (NoResultException e) {
-            return null; 
+
+            // 1) try digits-only
+            query.setParameter("cpf", onlyDigits);
+            try { return query.getSingleResult(); } catch (NoResultException ignore) {}
+
+            // 2) try formatted (xxx.xxx.xxx-xx)
+            if (formatted != null) {
+                query.setParameter("cpf", formatted);
+                try { return query.getSingleResult(); } catch (NoResultException ignore) {}
+            }
+
+            // 3) try raw input (maybe user saved with spaces or other chars)
+            query.setParameter("cpf", cpf);
+            try { return query.getSingleResult(); } catch (NoResultException ignore) {}
+
+            return null;
+        } catch (IllegalArgumentException ex) {
+            return null;
         }
     }
 
@@ -139,11 +162,8 @@ public class PacienteRepository {
      */
     private String formatarCpf(String cpf) {
         if (cpf == null) return null;
-        cpf = cpf.replaceAll("[^0-9]", "");
-        if (cpf.length() != 11) return cpf;
-        return cpf.substring(0, 3) + "." +
-               cpf.substring(3, 6) + "." +
-               cpf.substring(6, 9) + "-" +
-               cpf.substring(9, 11);
+        // Normaliza para apenas dígitos (sem pontos/hífens)
+        String onlyDigits = cpf.replaceAll("\\D", "");
+        return onlyDigits;
     }
 }

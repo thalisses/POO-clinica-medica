@@ -1,37 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
-    http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.2">
+  <persistence-unit name="clinica-medicaPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <!-- Let Hibernate scan for entities in the classpath -->
+    <properties>
+  <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+  <!-- Use the Derby database named 'sample' as requested in the assignment -->
+  <property name="javax.persistence.jdbc.url" value="jdbc:derby:sample;create=true"/>
+      <property name="javax.persistence.jdbc.user" value="app"/>
+      <property name="javax.persistence.jdbc.password" value="app"/>
 
-    <persistence-unit name="clinica-medicaPU" transaction-type="RESOURCE_LOCAL">
-        
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-
-        <!--  SUAS ENTIDADES  -->
-        <class>clinicaMedica.Paciente.Paciente</class>
-        <class>clinicaMedica.Medico.Doutor</class>
-        <class>clinicaMedica.Consulta.Consulta</class>
-
-        <properties>
-
-            <!-- Configuração Derby -->
-            <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/exemploJDBC"/>
-            <property name="javax.persistence.jdbc.user" value="sophia"/>
-            <property name="javax.persistence.jdbc.password" value="sophia2510"/>
-            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
-
-            <!-- Dialeto Hibernate para Derby -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"/>
-
-            <!-- Fazer as tabelas serem criadas automaticamente -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
-
-            <!-- Opcional: mostrar SQL no console -->
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-
-        </properties>
-    </persistence-unit>
-
+      <!-- Hibernate properties -->
+      <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+    </properties>
+  </persistence-unit>
 </persistence>

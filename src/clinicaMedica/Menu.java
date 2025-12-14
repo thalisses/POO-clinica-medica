@@ -4,6 +4,8 @@
  */
 package clinicaMedica;
 
+import clinicaMedica.Secretaria.PainelSecretaria;
+
 /**
  *
  * @author Joaquim

@@ -78,6 +78,8 @@ public class TelaRemover extends javax.swing.JFrame {
         // recarrega lista após remoção
         Paciente p = (Paciente) jComboBox1.getSelectedItem();
         carregarConsultasDoPaciente(p);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

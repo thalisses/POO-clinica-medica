@@ -4,8 +4,9 @@
  */
 package clinicaMedica.Paciente;
 
-import clinicaMedica.Model.Paciente.Paciente;
-import clinicaMedica.Model.Paciente.PacienteRepository;
+import clinicaMedica.Paciente.Paciente;
+import clinicaMedica.Paciente.PacienteRepository;
+import clinicaMedica.Secretaria.PainelSecretaria;
 import javax.swing.JOptionPane;
 
 /**

@@ -12,7 +12,8 @@ import clinicaMedica.Paciente.InfoAdd;
 import clinicaMedica.Paciente.Endereco;
 import clinicaMedica.Paciente.Contato;
 import clinicaMedica.Paciente.Paciente;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * Classe responsável por testar a geração de relatórios mensais de consultas.
@@ -55,47 +56,47 @@ public class TestadorRelatorio {
         // ===================================================
 
         Consulta c1 = new Consulta(
-            LocalDateTime.of(2025, 10, 5, 9, 0),
-            LocalDateTime.of(2025, 10, 5, 9, 0),
+            LocalDate.of(2025, 10, 5),
+            LocalTime.of(9, 0),
             drHouse,
             pacienteUm,
-            Consulta.typo.NORMAL
+            Consulta.TipoConsulta.NORMAL
         );
         repositorioConsultas.adicionarConsulta(c1);
 
         Consulta c2 = new Consulta(
-            LocalDateTime.of(2025, 10, 20, 11, 30),
-            LocalDateTime.of(2025, 10, 20, 11, 30),
+            LocalDate.of(2025, 10, 20),
+            LocalTime.of(11, 30),
             drHouse,
             pacienteDois,
-            Consulta.typo.RETORNO
+            Consulta.TipoConsulta.RETORNO
         );
         repositorioConsultas.adicionarConsulta(c2);
 
         Consulta c3 = new Consulta(
-            LocalDateTime.of(2025, 11, 1, 10, 0),
-            LocalDateTime.of(2025, 11, 1, 10, 0),
+            LocalDate.of(2025, 11, 1),
+            LocalTime.of(10, 0),
             drHouse,
             pacienteTres,
-            Consulta.typo.NORMAL
+            Consulta.TipoConsulta.NORMAL
         );
         repositorioConsultas.adicionarConsulta(c3);
 
         Consulta c4 = new Consulta(
-            LocalDateTime.of(2024, 10, 5, 14, 0),
-            LocalDateTime.of(2024, 10, 5, 14, 0),
+            LocalDate.of(2024, 10, 5),
+            LocalTime.of(14, 0),
             drHouse,
             pacienteUm,
-            Consulta.typo.NORMAL
+            Consulta.TipoConsulta.NORMAL
         );
         repositorioConsultas.adicionarConsulta(c4);
 
         Consulta c5 = new Consulta(
-            LocalDateTime.of(2025, 10, 15, 16, 0),
-            LocalDateTime.of(2025, 10, 15, 16, 0),
+            LocalDate.of(2025, 10, 15),
+            LocalTime.of(16, 0),
             drGrey,
             pacienteQuatro,
-            Consulta.typo.NORMAL
+            Consulta.TipoConsulta.NORMAL
         );
         repositorioConsultas.adicionarConsulta(c5);
 

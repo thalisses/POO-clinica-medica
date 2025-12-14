@@ -4,6 +4,11 @@
  */
 package clinicaMedica.Secretaria;
 
+import clinicaMedica.Paciente.CadastroPaciente;
+import clinicaMedica.Paciente.AtualizaPaciente;
+import clinicaMedica.Paciente.RemovePaciente;
+import clinicaMedica.Menu;
+
 /**
  *
  * @author Joaquim
