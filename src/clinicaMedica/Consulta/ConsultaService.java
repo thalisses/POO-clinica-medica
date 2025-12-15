@@ -10,7 +10,7 @@ import java.util.List;
 public class ConsultaService {
 
     private EntityManagerFactory emf =
-            Persistence.createEntityManagerFactory("clinica-medicaPU");
+            Persistence.createEntityManagerFactory("ConsultorioPU");
 
     public void cadastrar(Consulta consulta) {
         EntityManager em = emf.createEntityManager();

@@ -38,8 +38,8 @@ public class TelaRemover extends javax.swing.JFrame {
 
         for (Paciente p : lista) {
             jComboBox1.addItem(p);
-        }
-
+        }        
+        jComboBox1.setSelectedIndex(-1);
         em.close();
     }
 

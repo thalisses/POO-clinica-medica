@@ -4,8 +4,6 @@
  */
 package clinicaMedica.Consulta;
 
-import clinicaMedica.Medico.Doutor;
-import clinicaMedica.Paciente.Paciente;
 import java.awt.CardLayout;
 
 /**

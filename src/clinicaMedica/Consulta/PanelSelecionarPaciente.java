@@ -43,8 +43,8 @@ public class PanelSelecionarPaciente extends javax.swing.JPanel {
 
         for (Paciente p : lista) {
             jComboBox1.addItem(p);
-        }
-
+        }        
+        jComboBox1.setSelectedIndex(-1);
         em.close();
     }
 

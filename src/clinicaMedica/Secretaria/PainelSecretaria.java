@@ -4,19 +4,38 @@
  */
 package clinicaMedica.Secretaria;
 
-import clinicaMedica.Paciente.CadastroPaciente;
-import clinicaMedica.Paciente.AtualizaPaciente;
-import clinicaMedica.Paciente.RemovePaciente;
+import clinicaMedica.Consulta.MenuConsultas;
+import clinicaMedica.Consulta.PainelAtualizarConsulta;
+import clinicaMedica.Consulta.PainelCadastrarConsulta;
+import clinicaMedica.Consulta.PainelRelatorioConsulta;
+import clinicaMedica.Consulta.PainelRemoverConsulta;
 import clinicaMedica.Menu;
+import clinicaMedica.Paciente.AtualizaPaciente;
+import clinicaMedica.Paciente.CadastroPaciente;
+import clinicaMedica.Paciente.RemovePaciente;
 
 /**
- *
+ * Painel principal do módulo Secretária.
+ * Gerencia a navegação entre telas de cadastro, atualização e remoção de pacientes,
+ * bem como o gerenciamento de consultas.
+ * Utiliza CardLayout para alternância entre diferentes painéis.
+ * 
  * @author Joaquim
  */
 public class PainelSecretaria extends javax.swing.JPanel {
 
+    /** Painel de cadastro de consultas. */
+    private PainelCadastrarConsulta cadastrarConsulta;
+    
+    /** Painel de atualização de consultas. */
+    private PainelAtualizarConsulta atualizarConsulta;
+    
+    /** Painel de remoção de consultas. */
+    private PainelRemoverConsulta removerConsulta;
+
     /**
-     * Creates new form PainelSecretaria
+     * Cria e inicializa o painel da secretária.
+     * Configura o CardLayout e registra todos os painéis filhos.
      */
     public PainelSecretaria() {
         initComponents();
@@ -28,15 +47,33 @@ public class PainelSecretaria extends javax.swing.JPanel {
         RemovePaciente remover = new RemovePaciente();
         Menu menu = new Menu();
         
+        MenuConsultas menuConsultas = new MenuConsultas();
+        cadastrarConsulta = new PainelCadastrarConsulta();
+        atualizarConsulta = new PainelAtualizarConsulta();
+        removerConsulta = new PainelRemoverConsulta();
+        PainelRelatorioConsulta relatorioConsulta = new PainelRelatorioConsulta();
+        
         menu.setPainelPrincipal(this);
         cadastro.setPainelPrincipal(this);
         atualiza.setPainelPrincipal(this);
         remover.setPainelPrincipal(this);
         
+        menuConsultas.setPainelPrincipal(this);
+        cadastrarConsulta.setPainelPrincipal(this);
+        atualizarConsulta.setPainelPrincipal(this);
+        removerConsulta.setPainelPrincipal(this);
+        relatorioConsulta.setPainelPrincipal(this);
+        
         add(menu, "Menu");
         add(cadastro, "CadastroPaciente");
         add(atualiza, "atualziapaciente");
         add(remover, "removepaciente");
+        
+        add(menuConsultas, "MenuConsultas");
+        add(cadastrarConsulta, "CadastrarConsulta");
+        add(atualizarConsulta, "AtualizarConsulta");
+        add(removerConsulta, "RemoverConsulta");
+        add(relatorioConsulta, "GerarRelatorioConsulta");
     }
 
     /**
@@ -55,6 +92,13 @@ public class PainelSecretaria extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
     
+    /**
+     * Método main para teste do painel isoladamente.
+     * Cria uma janela temporária para visualizar e testar o PainelSecretaria
+     * sem precisar executar o sistema completo.
+     * 
+     * @param args argumentos de linha de comando (não utilizados)
+     */
     public static void main(String[] args) {
         // Cria uma janela (JFrame) temporária só para segurar seu painel
         javax.swing.JFrame janelaTeste = new javax.swing.JFrame("Teste Rápido - Módulo Secretária");
@@ -75,8 +119,23 @@ public class PainelSecretaria extends javax.swing.JPanel {
         janelaTeste.setVisible(true);
     }
     
-    // Metodo Publico que faz com que troque as telas, de forma generica.
+    /**
+     * Troca a tela exibida no painel principal.
+     * Ao trocar para painéis de consulta, recarrega automaticamente a lista de pacientes
+     * para garantir que pacientes recém-cadastrados estejam disponíveis.
+     * 
+     * @param nomeDaTela nome da tela a ser exibida (deve corresponder ao nome usado no add())
+     */
     public void trocarTela(String nomeDaTela){
+        // Recarrega a lista de pacientes quando trocar para painéis de consulta
+        if (nomeDaTela.equals("CadastrarConsulta")) {
+            cadastrarConsulta.recarregarPacientes();
+        } else if (nomeDaTela.equals("AtualizarConsulta")) {
+            atualizarConsulta.recarregarPacientes();
+        } else if (nomeDaTela.equals("RemoverConsulta")) {
+            removerConsulta.recarregarPacientes();
+        }
+        
         java.awt.CardLayout layout = (java.awt.CardLayout) this.getLayout();
         layout.show(this, nomeDaTela);
     }

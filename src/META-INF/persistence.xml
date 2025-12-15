@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.2">
-  <persistence-unit name="clinica-medicaPU" transaction-type="RESOURCE_LOCAL">
-    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-    <!-- Let Hibernate scan for entities in the classpath -->
-    <properties>
-  <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-  <!-- Use the Derby database named 'sample' as requested in the assignment -->
-  <property name="javax.persistence.jdbc.url" value="jdbc:derby:sample;create=true"/>
-      <property name="javax.persistence.jdbc.user" value="app"/>
-      <property name="javax.persistence.jdbc.password" value="app"/>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" 
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 
-      <!-- Hibernate properties -->
-      <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
-      <property name="hibernate.hbm2ddl.auto" value="update"/>
-      <property name="hibernate.show_sql" value="true"/>
-      <property name="hibernate.format_sql" value="true"/>
-    </properties>
-  </persistence-unit>
+    <persistence-unit name="ConsultorioPU" transaction-type="RESOURCE_LOCAL">
+        
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>clinicaMedica.Model.Paciente.Paciente</class>
+        <class>clinicaMedica.Model.Medico.Doutor</class>
+        <class>clinicaMedica.Model.Consulta.Consulta</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/clinica_medica;create=true"/>
+            
+            <property name="javax.persistence.jdbc.user" value="app"/>
+            <property name="javax.persistence.jdbc.password" value="app"/>
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
+
+            <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="true"/>
+        </properties>
+    </persistence-unit>
 </persistence>

@@ -5,10 +5,10 @@
 package clinicaMedica.Consulta;
 
 
-import clinicaMedica.Medico.Doutor;
 import clinicaMedica.Paciente.Paciente;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 
@@ -39,13 +39,8 @@ public class TelaCadastrar extends javax.swing.JFrame {
     for (Paciente p : listaPacientes) {
         jComboBox1.addItem(p);
     }
-
-    // Carregar médicos
-    java.util.List<Doutor> listaMedicos =
-            em.createQuery("FROM Doutor", Doutor.class).getResultList();
-    for (Doutor d : listaMedicos) {
-        jComboBox2.addItem(d);
-    }
+    
+    jComboBox1.setSelectedIndex(-1);
 
     em.close();
 }
@@ -63,7 +58,6 @@ public class TelaCadastrar extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -72,7 +66,6 @@ public class TelaCadastrar extends javax.swing.JFrame {
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,8 +74,6 @@ public class TelaCadastrar extends javax.swing.JFrame {
         jLabel2.setText("Data:");
 
         jLabel3.setText("Horario:");
-
-        jLabel4.setText("Médico:");
 
         jLabel5.setText("Paciente:");
 
@@ -125,11 +116,6 @@ public class TelaCadastrar extends javax.swing.JFrame {
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -157,10 +143,6 @@ public class TelaCadastrar extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -182,7 +164,6 @@ public class TelaCadastrar extends javax.swing.JFrame {
     String textoHora = jTextField2.getText();
     
     Paciente paciente = (Paciente) jComboBox1.getSelectedItem();
-    Doutor medico = (Doutor) jComboBox2.getSelectedItem();
 
     boolean normal = jRadioButton1.isSelected();
     boolean retorno = jRadioButton2.isSelected();
@@ -195,11 +176,6 @@ public class TelaCadastrar extends javax.swing.JFrame {
         
         if (textoHora.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Informe a hora");
-            return;
-        }
-        
-        if (medico == null) {
-            JOptionPane.showMessageDialog(this, "Selecione um medico");
             return;
         }
         
@@ -231,16 +207,18 @@ public class TelaCadastrar extends javax.swing.JFrame {
         return;
         }
         
-        Consulta.TipoConsulta tipo;
+        Consulta.typo tipo;
         if (jRadioButton1.isSelected()) {
-            tipo = Consulta.TipoConsulta.NORMAL;
+            tipo = Consulta.typo.NORMAL;
         }   
         else {
-            tipo = Consulta.TipoConsulta.RETORNO;
+            tipo = Consulta.typo.RETORNO;
         }
         
+        LocalDateTime dataHora = data.atTime(hora);
+        
         Consulta consulta;
-        consulta = new Consulta(data, hora, medico, paciente, tipo);
+        consulta = new Consulta(dataHora, dataHora, paciente, tipo);
                 
         new ConsultaService().cadastrar(consulta);
         JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
@@ -256,11 +234,9 @@ public class TelaCadastrar extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<Paciente> jComboBox1;
-    private javax.swing.JComboBox<Doutor> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JRadioButton jRadioButton1;

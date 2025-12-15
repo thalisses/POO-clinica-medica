@@ -1,87 +1,62 @@
 /*
- * Repositório simples para operações CRUD de Consulta.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package clinicaMedica.Consulta;
 
-import javax.persistence.*;
+/**
+ *
+ * @author User
+ */
+import clinicaMedica.Consulta.Consulta;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Implementação de repositório para consultas, usando JPA.
- */
 public class ConsultaRepository {
+	//lista de consultas
+    private List<Consulta> consultas;
+    
+    // Metodo contrutor que inicia a lista de consultas
+    public ConsultaRepository() {
+        this.consultas = new ArrayList<>();
+    }
 
-    private static final EntityManagerFactory emf =
-            Persistence.createEntityManagerFactory("clinica-medicaPU");
-
-    public ConsultaRepository() {}
-
+    // Adiciona uma consulta
     public void adicionarConsulta(Consulta consulta) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(consulta);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
+        consultas.add(consulta);
     }
 
-    public void atualizarConsulta(Consulta consulta) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.merge(consulta);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
-    }
-
+    // Remove uma consulta
     public void removerConsulta(Consulta consulta) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            consulta = em.merge(consulta);
-            em.remove(consulta);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            em.getTransaction().rollback();
-            e.printStackTrace();
-        } finally {
-            em.close();
-        }
+        consultas.remove(consulta);
     }
 
-    public List<Consulta> listarTodas() {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Consulta> query = em.createQuery("SELECT c FROM Consulta c", Consulta.class);
-            return query.getResultList();
-        } finally {
-            em.close();
-        }
-    }
-    // Backwards-compatible naming used in older code
+    // Retorna todas as consultas
     public List<Consulta> listarConsultas() {
-        return listarTodas();
+        return consultas;
     }
 
-    public List<Consulta> listarPorPaciente(Long pacienteId) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            TypedQuery<Consulta> query = em.createQuery(
-                    "SELECT c FROM Consulta c WHERE c.pacientes.id = :id", Consulta.class);
-            query.setParameter("id", pacienteId);
-            return query.getResultList();
-        } finally {
-            em.close();
+    // Buscar consultas de um paciente pelo CPF
+    public List<Consulta> buscarPorCpfPaciente(String cpf) {
+        List<Consulta> resultado = new ArrayList<>();
+        for (Consulta c : consultas) {
+            if (c.getPacientes().getCpf().equals(cpf)) {
+                resultado.add(c);
+            }
         }
+        return resultado;
+    }
+    
+    // Relatório de consultas do dia seguinte
+    public List<Consulta> relatorioProximoDia() {
+        List<Consulta> resultado = new ArrayList<>();
+        java.time.LocalDate amanha = java.time.LocalDate.now().plusDays(1);
+        
+        for (Consulta c : consultas) {
+            if (c.getData().toLocalDate().equals(amanha)) {
+                resultado.add(c);
+            }
+        }
+        return resultado;
     }
 }

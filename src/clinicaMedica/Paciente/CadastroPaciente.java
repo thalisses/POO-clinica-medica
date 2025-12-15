@@ -9,7 +9,6 @@ import clinicaMedica.Paciente.Endereco;
 import clinicaMedica.Paciente.Paciente;
 import clinicaMedica.Paciente.PacienteRepository;
 import clinicaMedica.Secretaria.PainelSecretaria;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -27,14 +26,6 @@ public class CadastroPaciente extends javax.swing.JPanel {
     public CadastroPaciente() {
         initComponents();
         tipoConvenioBox.setModel(new DefaultComboBoxModel<>(Paciente.tiposConvenios.values()));
-        // Aplica máscara dd/MM/yyyy no campo de nascimento
-        try {
-            javax.swing.text.MaskFormatter mask = new javax.swing.text.MaskFormatter("##/##/####");
-            mask.setPlaceholderCharacter('_');
-            campoNascimento.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(mask));
-        } catch (java.text.ParseException ex) {
-            // Se falhar, mantém o campo sem máscara
-        }
     }
 
     /**
@@ -65,7 +56,7 @@ public class CadastroPaciente extends javax.swing.JPanel {
         planoSaude = new javax.swing.JLabel();
         campoNome = new javax.swing.JTextField();
         campoCPF = new javax.swing.JTextField();
-    campoNascimento = new javax.swing.JFormattedTextField();
+        campoNascimento = new javax.swing.JTextField();
         dadosImportantestxt = new javax.swing.JLabel();
         campoRua = new javax.swing.JTextField();
         campoNumero = new javax.swing.JTextField();
@@ -545,7 +536,7 @@ public class CadastroPaciente extends javax.swing.JPanel {
     private javax.swing.JTextField campoCidade;
     private javax.swing.JTextField campoEmail;
     private javax.swing.JTextField campoEstado;
-    private javax.swing.JFormattedTextField campoNascimento;
+    private javax.swing.JTextField campoNascimento;
     private javax.swing.JTextField campoNome;
     private javax.swing.JTextField campoNumero;
     private javax.swing.JTextField campoPlano;

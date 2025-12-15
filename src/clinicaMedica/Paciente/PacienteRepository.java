@@ -8,18 +8,21 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Classe responsável por armazenar e gerenciar os pacientes do sistema.
+ * Repositório para gerenciamento de pacientes utilizando JPA.
+ * Implementa o padrão Singleton para garantir uma única instância do repositório.
+ * Responsável por operações CRUD (Create, Read, Update, Delete) de pacientes.
  */
 public class PacienteRepository {
     
-    // Use the persistence-unit name declared in src/META-INF/persistence.xml
-    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("clinica-medicaPU");
+    /** Factory para criação de EntityManagers conectados ao banco de dados. */
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConsultorioPU");
 
-    /** Instância única da classe (padrão Singleton) */
+    /** Instância única da classe (padrão Singleton). */
     private static PacienteRepository instancia;
 
     /**
      * Retorna a instância única do repositório.
+     * 
      * @return instância de PacienteRepository
      */
     public static PacienteRepository getInstancia() {
@@ -30,13 +33,15 @@ public class PacienteRepository {
     }
 
     /**
-     * Construtor Vazio.
+     * Construtor vazio.
+     * Utilize o método getInstancia() para obter a instância única.
      */
     public PacienteRepository() {}
 
     /**
-     * Adiciona um novo paciente à lista.
-     * @param paciente paciente a ser adicionado
+     * Persiste um novo paciente no banco de dados.
+     * 
+     * @param paciente objeto Paciente a ser persistido
      */
     public void adicionarPaciente(Paciente paciente) {
         EntityManager em = emf.createEntityManager();
@@ -51,8 +56,9 @@ public class PacienteRepository {
     }
 
     /**
-     * Atualiza as informações de um paciente existente.
-     * @param paciente paciente atualizado
+     * Atualiza as informações de um paciente existente no banco de dados.
+     * 
+     * @param paciente objeto Paciente com dados atualizados
      */
     public void atualizarPaciente(Paciente paciente) {
         EntityManager em = emf.createEntityManager();
@@ -67,8 +73,10 @@ public class PacienteRepository {
     }
 
     /**
-     * Remove um paciente do repositório pelo CPF.
-     * @param cpf CPF do paciente a ser removido
+     * Remove um paciente do banco de dados pelo CPF.
+     * O CPF será formatado automaticamente antes da busca.
+     * 
+     * @param cpf CPF do paciente a ser removido (pode estar formatado ou não)
      */
     public void removerPaciente(String cpf) {
         EntityManager em = emf.createEntityManager();
@@ -93,8 +101,9 @@ public class PacienteRepository {
     }
 
     /**
-     * Retorna uma lista com todos os pacientes cadastrados.
-     * @return lista de pacientes
+     * Retorna todos os pacientes cadastrados no banco de dados.
+     * 
+     * @return lista de todos os pacientes (vazia se não houver pacientes)
      */
     public List<Paciente> listarPacientes() {
         EntityManager em = emf.createEntityManager();
@@ -120,38 +129,16 @@ public class PacienteRepository {
     }
     
     private Paciente buscarPorCpfInternal(EntityManager em, String cpf) {
-        if (cpf == null) return null;
-        String onlyDigits = cpf.replaceAll("\\D", "");
-        String formatted = null;
-        if (onlyDigits.length() == 11) {
-            formatted = onlyDigits.substring(0, 3) + "." +
-                        onlyDigits.substring(3, 6) + "." +
-                        onlyDigits.substring(6, 9) + "-" +
-                        onlyDigits.substring(9, 11);
-        }
-
-        // Try multiple forms to be tolerant with existing DB values (digits-only, formatted, original)
+        String cpfFormatado = formatarCpf(cpf);
         try {
+            
             TypedQuery<Paciente> query = em.createQuery(
                 "SELECT p FROM Paciente p WHERE p.cpf = :cpf", Paciente.class);
-
-            // 1) try digits-only
-            query.setParameter("cpf", onlyDigits);
-            try { return query.getSingleResult(); } catch (NoResultException ignore) {}
-
-            // 2) try formatted (xxx.xxx.xxx-xx)
-            if (formatted != null) {
-                query.setParameter("cpf", formatted);
-                try { return query.getSingleResult(); } catch (NoResultException ignore) {}
-            }
-
-            // 3) try raw input (maybe user saved with spaces or other chars)
-            query.setParameter("cpf", cpf);
-            try { return query.getSingleResult(); } catch (NoResultException ignore) {}
-
-            return null;
-        } catch (IllegalArgumentException ex) {
-            return null;
+            query.setParameter("cpf", cpfFormatado);
+            
+            return query.getSingleResult(); 
+        } catch (NoResultException e) {
+            return null; 
         }
     }
 
@@ -162,8 +149,11 @@ public class PacienteRepository {
      */
     private String formatarCpf(String cpf) {
         if (cpf == null) return null;
-        // Normaliza para apenas dígitos (sem pontos/hífens)
-        String onlyDigits = cpf.replaceAll("\\D", "");
-        return onlyDigits;
+        cpf = cpf.replaceAll("[^0-9]", "");
+        if (cpf.length() != 11) return cpf;
+        return cpf.substring(0, 3) + "." +
+               cpf.substring(3, 6) + "." +
+               cpf.substring(6, 9) + "-" +
+               cpf.substring(9, 11);
     }
 }

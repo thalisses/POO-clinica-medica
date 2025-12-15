@@ -4,22 +4,14 @@
  */
 package clinicaMedica.Paciente;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.CascadeType;
-import javax.persistence.Enumerated;
-import javax.persistence.EnumType;
-import javax.persistence.Table;
-
 /**
  * Classe que representa um paciente da clínica médica,
  * contendo informações pessoais, de contato, endereço e convênio.
  */
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import clinicaMedica.Medico.Prontuario;
 
 @Entity
 @Table(name= "tb_paciente")
@@ -29,18 +21,18 @@ public class Paciente {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
     
     /** Nome completo do paciente */
     @Column(nullable = false)
     private String nome;
     
-    /** CPF do paciente, armazenado sem formatação (apenas dígitos) */
+    /** CPF do paciente, armazenado no formato xxx.xxx.xxx-xx */
     @Column(nullable = false, unique = true)
     private String cpf;
     
     /** Data de nascimento no formato dd/mm/yyyy */
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String dataNascimento;
     
     /** Endereço do paciente */
@@ -66,7 +58,11 @@ public class Paciente {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "infoAdd_id")
     private InfoAdd informacoesAdicionais;
- 
+    
+    /** Lista de prontuários do paciente */
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Prontuario> prontuarios = new ArrayList<>();
+    
     /**
      * Tipos de convênios aceitos pela clínica.
      */
@@ -99,22 +95,15 @@ public class Paciente {
         setPlano(plano);
     }
 
-    // Backwards-compatible constructor used by some test/console code
-    public Paciente(String nome, String cpf, String dataNascimento, Endereco endereco, Contato contato, String plano, InfoAdd informacoesAdicionais) {
-        this.nome = nome;
-        setCpf(cpf);
-        setDataNascimento(dataNascimento);
-        this.endereco = endereco;
-        this.contato = contato;
-        this.convenio = null;
-        setInfoAdd(informacoesAdicionais);
-        setPlano(plano);
+    // gets e set para o ID
+    public Long getId() { 
+        return id; 
+    }
+    public void setId(Long id) {
+        this.id = id; 
     }
     
-    public Long getId(){ 
-        return id;
-    }
-
+    
     /** @return CPF do paciente */
     public String getCpf() {
         return cpf;
@@ -128,11 +117,21 @@ public class Paciente {
     public void setCpf(String cpf) {
         if (cpf == null) {
             this.cpf = null;
+            System.out.println("CPF nulo, impossível atribuir.");
             return;
         }
-        // Armazena apenas os dígitos do CPF (ex: 01234567890)
-        String onlyDigits = cpf.replaceAll("\\D", "");
-        this.cpf = onlyDigits;
+
+        cpf = cpf.replaceAll("\\D", "");
+        if (cpf.length() != 11) {
+            this.cpf = null;
+            System.out.println("CPF inválido! impossível atribuir.");
+            return;
+        }
+
+        this.cpf = cpf.substring(0, 3) + "." +
+                   cpf.substring(3, 6) + "." +
+                   cpf.substring(6, 9) + "-" +
+                   cpf.substring(9, 11);
     }
 
     /** @return nome do paciente */
@@ -247,13 +246,12 @@ public class Paciente {
      * @return data formatada ou null se inválida
      */
     public String converterNascimento(String nascimento) {
-        if (nascimento == null) return null;
-        // Aceita formatos com ou sem separadores, ex: "ddMMyyyy" ou "dd/MM/yyyy"
-        String onlyDigits = nascimento.replaceAll("\\D", "");
-        if (onlyDigits.length() != 8) return null;
-        return onlyDigits.substring(0, 2) + "/" +
-               onlyDigits.substring(2, 4) + "/" +
-               onlyDigits.substring(4, 8);
+        if (nascimento.length() != 8) {
+            return null;
+        }
+        return nascimento.substring(0, 2) + "/" + 
+               nascimento.substring(2, 4) + "/" + 
+               nascimento.substring(4, 8);
     }
 
     /**
@@ -262,15 +260,33 @@ public class Paciente {
      * @return CPF formatado ou null se inválido
      */
     public String converterCpf(String cpfInicial) {
-        if (cpfInicial == null) return null;
-        String onlyDigits = cpfInicial.replaceAll("\\D", "");
-        if (!onlyDigits.matches("\\d{11}")) {
+        if (cpf == null || !cpf.matches("\\d{11}")) {
             return null;
         }
-        return onlyDigits.substring(0, 3) + "." +
-               onlyDigits.substring(3, 6) + "." +
-               onlyDigits.substring(6, 9) + "-" +
-               onlyDigits.substring(9, 11);
+        return cpf.substring(0, 3) + "." +
+               cpf.substring(3, 6) + "." +
+               cpf.substring(6, 9) + "-" +
+               cpf.substring(9, 11);
+    }
+
+    /**
+     * Adiciona um prontuário à lista de prontuários do paciente.
+     * @param prontuario prontuário a ser adicionado
+     */
+    public void adicionarProntuario(Prontuario prontuario) {
+        if (prontuarios == null) {
+            prontuarios = new ArrayList<>();
+        }
+        prontuarios.add(prontuario);
+        prontuario.setPaciente(this);
+    }
+
+    /**
+     * Retorna a lista de prontuários do paciente.
+     * @return lista de prontuários
+     */
+    public List<Prontuario> getProntuarios() {
+        return prontuarios;
     }
 
     /**
@@ -278,7 +294,7 @@ public class Paciente {
      * @return string formatada com os dados do paciente
      */
     @Override
-public String toString() {
-    return nome;
-}
+    public String toString() {
+        return nome;
+    }
 }

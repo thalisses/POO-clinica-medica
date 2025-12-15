@@ -37,6 +37,7 @@ public class Menu extends javax.swing.JPanel {
         cadastrarPaciente = new javax.swing.JButton();
         removerPaciente = new javax.swing.JButton();
         atualizarPaciente = new javax.swing.JButton();
+        gerenciarConsultas = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(944, 557));
         setLayout(new java.awt.GridBagLayout());
@@ -46,12 +47,13 @@ public class Menu extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(6, 418, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.CENTER;
+        gridBagConstraints.insets = new java.awt.Insets(20, 0, 0, 0);
         add(menuTxt, gridBagConstraints);
 
         cadastrarPaciente.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         cadastrarPaciente.setText("Cadastrar Paciente");
+        cadastrarPaciente.setPreferredSize(new java.awt.Dimension(280, 50));
         cadastrarPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cadastrarPacienteActionPerformed(evt);
@@ -60,13 +62,13 @@ public class Menu extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(83, 377, 0, 341);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.CENTER;
+        gridBagConstraints.insets = new java.awt.Insets(50, 0, 0, 0);
         add(cadastrarPaciente, gridBagConstraints);
 
         removerPaciente.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         removerPaciente.setText("Remover Paciente");
+        removerPaciente.setPreferredSize(new java.awt.Dimension(280, 50));
         removerPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removerPacienteActionPerformed(evt);
@@ -75,13 +77,13 @@ public class Menu extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(83, 377, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.CENTER;
+        gridBagConstraints.insets = new java.awt.Insets(30, 0, 0, 0);
         add(removerPaciente, gridBagConstraints);
 
         atualizarPaciente.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         atualizarPaciente.setText("Atualizar Paciente");
+        atualizarPaciente.setPreferredSize(new java.awt.Dimension(280, 50));
         atualizarPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 atualizarPacienteActionPerformed(evt);
@@ -90,10 +92,24 @@ public class Menu extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(80, 377, 124, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.CENTER;
+        gridBagConstraints.insets = new java.awt.Insets(30, 0, 0, 0);
         add(atualizarPaciente, gridBagConstraints);
+
+        gerenciarConsultas.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        gerenciarConsultas.setText("Gerenciar Consultas");
+        gerenciarConsultas.setPreferredSize(new java.awt.Dimension(280, 50));
+        gerenciarConsultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gerenciarConsultasActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.CENTER;
+        gridBagConstraints.insets = new java.awt.Insets(30, 0, 50, 0);
+        add(gerenciarConsultas, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void removerPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerPacienteActionPerformed
@@ -111,10 +127,15 @@ public class Menu extends javax.swing.JPanel {
         
     }//GEN-LAST:event_atualizarPacienteActionPerformed
 
+    private void gerenciarConsultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gerenciarConsultasActionPerformed
+        painelPrincipal.trocarTela("MenuConsultas");
+    }//GEN-LAST:event_gerenciarConsultasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton atualizarPaciente;
     private javax.swing.JButton cadastrarPaciente;
+    private javax.swing.JButton gerenciarConsultas;
     private javax.swing.JLabel menuTxt;
     private javax.swing.JButton removerPaciente;
     // End of variables declaration//GEN-END:variables
