@@ -4,8 +4,9 @@
  */
 package clinicaMedica.Paciente;
 
-import clinicaMedica.Model.Paciente.Paciente;
-import clinicaMedica.Model.Paciente.PacienteRepository;
+import clinicaMedica.Paciente.Paciente;
+import clinicaMedica.Paciente.PacienteRepository;
+import clinicaMedica.Secretaria.PainelSecretaria;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,11 +16,11 @@ import javax.swing.JOptionPane;
 public class RemovePaciente extends javax.swing.JPanel {
 
     private PainelSecretaria painelPrincipal;
-    
+
     public void setPainelPrincipal(PainelSecretaria p){
         this.painelPrincipal = p;
     }
-    
+
     public RemovePaciente() {
         initComponents();
     }
@@ -103,57 +104,89 @@ public class RemovePaciente extends javax.swing.JPanel {
         add(cancelarButton, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Evento acionado ao clicar no botão Cancelar.
+     * Limpa os campos e retorna à tela principal do menu.
+     * 
+     * @param evt evento de ação do botão
+     */
     private void cancelarButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelarButtonActionPerformed
-        painelPrincipal.trocarTela("Menu");
+
+        // Verifica se o container principal existe antes de tentar trocar a tela
+        if (painelPrincipal != null) {
+            // 1. Retorna para a tela principal (Menu)
+            painelPrincipal.trocarTela("Menu");
+        } else {
+            // Se o painelPrincipal não estiver configurado, exibe um aviso (opcional)
+            javax.swing.JOptionPane.showMessageDialog(this, "Erro: O Painel Principal (PainelSecretaria) não foi configurado corretamente.");
+        }
+
+        // 2. Limpa o campo de CPF
         campoCpfPaciente.setText("");
     }//GEN-LAST:event_cancelarButtonActionPerformed
 
-    private void removerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerButtonActionPerformed
-        String cpf = campoCpfPaciente.getText();
+    /**
+     * Evento acionado ao clicar no botão Efetuar Remoção.
+     * Valida o CPF informado, busca o paciente no repositório,
+     * solicita confirmação e remove o paciente do banco de dados.
+     * 
+     * @param evt evento de ação do botão
+     */
+    private void removerButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        String cpf = campoCpfPaciente.getText().trim();
         
+        // Valida se o CPF foi informado
         if (cpf.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, digite um CPF.", "Campo Vazio", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, 
+                "Por favor, informe o CPF do paciente.", 
+                "Campo Obrigatório", 
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
         
         try {
+            PacienteRepository repository = new PacienteRepository();
+            Paciente paciente = repository.buscarPorCpf(cpf);
             
-            PacienteRepository repositorio = PacienteRepository.getInstancia();
-            Paciente pacienteEncontrado = repositorio.buscarPorCpf(cpf);
-
-            
-            if (pacienteEncontrado == null) {
-                JOptionPane.showMessageDialog(this, "Paciente não encontrado com este CPF!", "Erro", JOptionPane.ERROR_MESSAGE);
+            if (paciente == null) {
+                JOptionPane.showMessageDialog(this, 
+                    "Paciente com CPF " + cpf + " não encontrado.", 
+                    "Paciente Não Encontrado", 
+                    JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
             
-            int resposta = JOptionPane.showConfirmDialog(this, 
-                "Tem certeza que deseja EXCLUIR este paciente?\n\n" + 
-                "Nome: " + pacienteEncontrado.getNome() + "\n" +
-                "CPF: " + pacienteEncontrado.getCpf(),
-                "Confirmar Exclusão", 
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE
-            );
-
+            // Confirma a remoção
+            int opcao = JOptionPane.showConfirmDialog(this, 
+                "Deseja realmente remover o paciente " + paciente.getNome() + "?", 
+                "Confirmar Remoção", 
+                JOptionPane.YES_NO_OPTION);
             
-            if (resposta == JOptionPane.YES_OPTION) {
+            if (opcao == JOptionPane.YES_OPTION) {
+                repository.removerPaciente(cpf);
                 
+                JOptionPane.showMessageDialog(this, 
+                    "Paciente removido com sucesso!", 
+                    "Sucesso", 
+                    JOptionPane.INFORMATION_MESSAGE);
                 
-                repositorio.removerPaciente(cpf);
-                
-                JOptionPane.showMessageDialog(this, "Paciente removido com sucesso!");
-                
-                
+                // Limpa o campo
                 campoCpfPaciente.setText("");
+                
+                // Retorna ao menu
+                if (painelPrincipal != null) {
+                    painelPrincipal.trocarTela("Menu");
+                }
             }
-
+            
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Erro ao tentar remover: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, 
+                "Erro ao remover paciente: " + e.getMessage(), 
+                "Erro", 
+                JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-    }//GEN-LAST:event_removerButtonActionPerformed
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

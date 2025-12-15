@@ -16,7 +16,7 @@ public class ArmazemHistoricoPaciente {
 	private HashMap<String, RepositorioProntuario> Lista_PacienteProntuario = new HashMap<>();
 	
 	/*
-	 * Contrutor que inicia o HashMap
+	 * Construtor que inicia o HashMap
 	 */
 	public ArmazemHistoricoPaciente() {
 		this.Lista_PacienteProntuario = new HashMap<>();

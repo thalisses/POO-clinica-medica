@@ -4,23 +4,8 @@
  */
 package clinicaMedica;
 
-import clinicaMedica.Mensagem.GerenciadorMensagens;
 import clinicaMedica.Consulta.ConsultaRepository;
-import clinicaMedica.Medico.MenuMedico;
-import clinicaMedica.Medico.RepositorioProntuario;
-import clinicaMedica.Medico.Prontuario;
-import clinicaMedica.Mensagem.Email;
-import clinicaMedica.Mensagem.SMS;
-import clinicaMedica.Paciente.InfoAdd;
-import clinicaMedica.Paciente.Endereco;
-import clinicaMedica.Paciente.Contato;
-import clinicaMedica.Paciente.ArmazemHistoricoPaciente;
-import clinicaMedica.Paciente.Paciente;
 import clinicaMedica.Paciente.PacienteRepository;
-import clinicaMedica.Secretaria.MenuSecretaria;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
 
 /**
  * Classe principal responsável por iniciar o sistema da clínica médica.
@@ -29,16 +14,35 @@ import java.util.Scanner;
 public class Main {
 
     /**
-     * Método principal que inicializa o sistema e exibe o menu de opções.
+     * Método principal que inicializa o sistema e exibe a interface gráfica principal.
      *
      * @param args argumentos da linha de comando
      */
     public static void main(String[] args) {
-        Scanner entrada = new Scanner(System.in);
+        // Inicializa os repositórios
         PacienteRepository repositorioPacientes = new PacienteRepository();
         ConsultaRepository repositorioConsultas = new ConsultaRepository();
-        ArmazemHistoricoPaciente armazem = new ArmazemHistoricoPaciente();
-
+        
+        // Configura o look and feel do sistema
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        
+        // Abre a interface gráfica principal
+        java.awt.EventQueue.invokeLater(() -> {
+            MenuPrincipal menuPrincipal = new MenuPrincipal();
+            menuPrincipal.setVisible(true);
+        });
+        
+        /* MENU EM CONSOLE (comentado - pode ser removido se não for mais necessário)
+        Scanner entrada = new Scanner(System.in);
         MenuSecretaria menuSecretaria = new MenuSecretaria();
         MenuMedico menuMedico = new MenuMedico();
 
@@ -94,6 +98,7 @@ public class Main {
             }
         }
         entrada.close();
+        */
     }
 
     /**

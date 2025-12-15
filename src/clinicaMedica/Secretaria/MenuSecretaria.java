@@ -327,7 +327,7 @@ public class MenuSecretaria {
         String tipoStr = entrada.nextLine();
         Consulta.typo tipo = tipoStr.equals("2") ? Consulta.typo.RETORNO : Consulta.typo.NORMAL;
 
-        Consulta consulta = new Consulta(data, data, medico, paciente, tipo);
+        Consulta consulta = new Consulta(data, data, paciente, tipo);
         repositorioConsultas.adicionarConsulta(consulta);
         System.out.println("✅ Consulta cadastrada com sucesso!");
     }

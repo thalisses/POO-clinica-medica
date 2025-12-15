@@ -5,99 +5,107 @@
 package clinicaMedica.Consulta;
 
 /**
+ * Representa uma consulta médica no sistema.
+ * Entidade JPA mapeada para a tabela tb_consulta no banco de dados.
+ * Armazena informações sobre data, horário, paciente e tipo de consulta.
  *
  * @author User
  */
-import clinicaMedica.Medico.Doutor;
 import clinicaMedica.Paciente.Paciente;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.persistence.*;
 
 @Entity
-@Table(name= "consulta")
+@Table(name = "tb_consulta")
 public class Consulta {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @Column(nullable = false)
-    private LocalDate data;
-    @Column(nullable = false)
-    private LocalTime horario;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(name = "data_consulta")
+    private LocalDateTime data;
+    
+    @Column(name = "horario_consulta")
+    private LocalDateTime horario;
+    
     @ManyToOne
-    @JoinColumn(name = "medico_id", nullable = false)
-    private Doutor medico;
-    @ManyToOne
-    @JoinColumn(name = "paciente_id", nullable = false)
+    @JoinColumn(name = "paciente_id")
     private Paciente pacientes;
 
-    public enum TipoConsulta { NORMAL, RETORNO;}
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TipoConsulta tipoConsulta;
-
-    // metodo para calcular o tipo de consulta, se é consulta normal retorna horario 1h
-    // se não retorna horario 30m
-    public LocalTime calcularFimConsulta (){
-        if (tipoConsulta == TipoConsulta.NORMAL) {
-            return horario.plusHours(1);
-        }
-        else {
-            return horario.plusMinutes(30);
-        }
+    /** Enumeração dos tipos de consulta disponíveis. */
+    public enum typo { 
+        /** Consulta normal - duração de 1 hora. */
+        NORMAL, 
+        /** Consulta de retorno - duração de 30 minutos. */
+        RETORNO;
     }
     
-    // Contrutor da classe Consulta
-    public Consulta(){}
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_consulta")
+    private typo tipoConsulta;
+
+    /**
+     * Construtor padrão sem argumentos.
+     * Necessário para o funcionamento do JPA.
+     */
+    public Consulta() {
+    }
+
+    /**
+     * Calcula o horário de término da consulta com base no tipo.
+     * Consultas normais têm duração de 1 hora, consultas de retorno duram 30 minutos.
+     * 
+     * @return horário de término da consulta
+     */
+    public LocalDateTime calcularTipo (){
+        if (tipoConsulta == typo.NORMAL) return horario.plusHours(1);
+        else return horario.plusMinutes(30);
+    }
     
-    public Consulta(LocalDate data, LocalTime horario, Doutor medico, Paciente pacientes, TipoConsulta tipoConsulta) {
+    /**
+     * Cria uma nova consulta com todos os atributos.
+     * 
+     * @param data data da consulta
+     * @param horario horário de início da consulta
+     * @param pacientes paciente que será atendido
+     * @param tipoConsulta tipo da consulta (NORMAL ou RETORNO)
+     */
+    public Consulta(LocalDateTime data, LocalDateTime horario, Paciente pacientes, typo tipoConsulta) {
         this.data = data;
         this.horario = horario;
-        this.medico = medico;
         this.pacientes = pacientes;
         this.tipoConsulta = tipoConsulta;
     }
 
-    	/*
-    	 * Sets e Gets
-    	 * para os atributos
-    	 * da classe Consulta
-    	 */
-    public Integer getId(){
+    /**
+     * Métodos getters e setters para acesso e modificação
+     * dos atributos da classe Consulta.
+     */
+    
+    public Long getId() {
         return id;
     }
-    
-    public LocalDate getData() {
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 
-    public LocalTime getHorario() {
+    public LocalDateTime getHorario() {
         return horario;
     }
 
-    public void setHorario(LocalTime horario) {
+    public void setHorario(LocalDateTime horario) {
         this.horario = horario;
-    }
-
-    public Doutor getMedico() {
-        return medico;
-    }
-
-    public void setMedico(Doutor medico) {
-        this.medico = medico;
     }
 
     public Paciente getPacientes() {
@@ -108,27 +116,25 @@ public class Consulta {
         this.pacientes = pacientes;
     }
 
-    public TipoConsulta getTipoConsulta() {
+    public typo getTipoConsulta() {
         return tipoConsulta;
     }
 
-    public void setTipoConsulta(TipoConsulta tipoConsulta) {
+    public void setTipoConsulta(typo tipoConsulta) {
         this.tipoConsulta = tipoConsulta;
     }
     
-    /*
-     * Metodo que retorna em formato String
-     * todos os objetos e atributos da classe
-     * Consulta.
+    /**
+     * Retorna uma representação textual formatada da consulta.
+     * Formato: "Nome do Paciente - dd/MM/yyyy HH:mm (TIPO)"
+     * Exemplo: "João Silva - 22/12/2025 14:30 (NORMAL)"
+     * 
+     * @return string formatada com informações da consulta
      */
     @Override
     public String toString() {
-        return "Consulta{" +
-                "data=" + data +
-                ", horario=" + horario +
-                ", medico=" + medico +
-                ", pacientes=" + pacientes +
-                ", tipoConsulta=" + tipoConsulta +
-                '}';
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return pacientes.getNome() + " - " + 
+               horario.format(formatter) + " (" + tipoConsulta + ")";
     }
 }

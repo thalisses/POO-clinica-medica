@@ -4,20 +4,14 @@
  */
 package clinicaMedica.Paciente;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 /**
  * Classe que representa um paciente da clínica médica,
  * contendo informações pessoais, de contato, endereço e convênio.
  */
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import clinicaMedica.Medico.Prontuario;
 
 @Entity
 @Table(name= "tb_paciente")
@@ -38,7 +32,7 @@ public class Paciente {
     private String cpf;
     
     /** Data de nascimento no formato dd/mm/yyyy */
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String dataNascimento;
     
     /** Endereço do paciente */
@@ -64,7 +58,11 @@ public class Paciente {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "infoAdd_id")
     private InfoAdd informacoesAdicionais;
- 
+    
+    /** Lista de prontuários do paciente */
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Prontuario> prontuarios = new ArrayList<>();
+    
     /**
      * Tipos de convênios aceitos pela clínica.
      */
@@ -96,15 +94,16 @@ public class Paciente {
         setInfoAdd(informacoesAdicionais);
         setPlano(plano);
     }
-    
-    public Integer getId(){ 
-        return id;
-    }
-    /**
-     * Construtor padrão (vazio).
-     */
-    public Paciente() { }
 
+    // gets e set para o ID
+    public Long getId() { 
+        return id; 
+    }
+    public void setId(Long id) {
+        this.id = id; 
+    }
+    
+    
     /** @return CPF do paciente */
     public String getCpf() {
         return cpf;
@@ -116,7 +115,23 @@ public class Paciente {
      * @param cpf CPF a ser formatado
      */
     public void setCpf(String cpf) {
-        this.cpf = cpf;
+        if (cpf == null) {
+            this.cpf = null;
+            System.out.println("CPF nulo, impossível atribuir.");
+            return;
+        }
+
+        cpf = cpf.replaceAll("\\D", "");
+        if (cpf.length() != 11) {
+            this.cpf = null;
+            System.out.println("CPF inválido! impossível atribuir.");
+            return;
+        }
+
+        this.cpf = cpf.substring(0, 3) + "." +
+                   cpf.substring(3, 6) + "." +
+                   cpf.substring(6, 9) + "-" +
+                   cpf.substring(9, 11);
     }
 
     /** @return nome do paciente */
@@ -255,11 +270,31 @@ public class Paciente {
     }
 
     /**
+     * Adiciona um prontuário à lista de prontuários do paciente.
+     * @param prontuario prontuário a ser adicionado
+     */
+    public void adicionarProntuario(Prontuario prontuario) {
+        if (prontuarios == null) {
+            prontuarios = new ArrayList<>();
+        }
+        prontuarios.add(prontuario);
+        prontuario.setPaciente(this);
+    }
+
+    /**
+     * Retorna a lista de prontuários do paciente.
+     * @return lista de prontuários
+     */
+    public List<Prontuario> getProntuarios() {
+        return prontuarios;
+    }
+
+    /**
      * Retorna uma representação textual de todas as informações do paciente.
      * @return string formatada com os dados do paciente
      */
     @Override
-public String toString() {
-    return nome;
-}
+    public String toString() {
+        return nome;
+    }
 }

@@ -4,7 +4,6 @@
  */
 package clinicaMedica.Consulta;
 
-import clinicaMedica.Medico.Doutor;
 import clinicaMedica.Paciente.Paciente;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,29 +21,12 @@ public class PanelEditarConsulta extends javax.swing.JPanel {
      */
     private Consulta consultaOriginal;
     
-    private void carregarComboMedico() {
-    javax.persistence.EntityManager em =
-        javax.persistence.Persistence
-            .createEntityManagerFactory("clinica-medicaPU")
-            .createEntityManager();
-
-    // Carregar médicos
-    java.util.List<Doutor> listaMedicos =
-            em.createQuery("FROM Doutor", Doutor.class).getResultList();
-    for (Doutor d : listaMedicos) {
-        jComboBox1.addItem(d);
-    }
-
-    em.close();
-}
-    
     public void setConsultaOriginal(Consulta c) {
         this.consultaOriginal = c;
     }
     
     public PanelEditarConsulta(TelaAtualizar aThis) {
         initComponents();
-        carregarComboMedico();
     }
 
     /**
@@ -66,8 +48,6 @@ public class PanelEditarConsulta extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jLabel5 = new javax.swing.JLabel();
 
         jLabel1.setText("Atualizar Consulta");
 
@@ -99,14 +79,6 @@ public class PanelEditarConsulta extends javax.swing.JPanel {
             }
         });
 
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setText("Medico:");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -132,17 +104,10 @@ public class PanelEditarConsulta extends javax.swing.JPanel {
                                     .addComponent(jRadioButton2)
                                     .addComponent(jRadioButton1)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel5)
-                                        .addGap(44, 44, 44)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(93, 93, 93)))))
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(101, 101, 101)))))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -160,17 +125,13 @@ public class PanelEditarConsulta extends javax.swing.JPanel {
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jRadioButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jRadioButton2)
                 .addGap(11, 11, 11)
                 .addComponent(jButton1)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -178,15 +139,10 @@ public class PanelEditarConsulta extends javax.swing.JPanel {
            
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
          // 1. Coletar dados novos
         String novaData = jTextField1.getText();
         String novoHorario = jTextField2.getText();
-        Doutor novoMedico = (Doutor) jComboBox1.getSelectedItem();
         Paciente paciente = consultaOriginal.getPacientes();
         boolean normal = jRadioButton1.isSelected();
         boolean retorno = jRadioButton2.isSelected();
@@ -197,11 +153,6 @@ public class PanelEditarConsulta extends javax.swing.JPanel {
         
         if (novoHorario.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Informe a hora");
-            return;
-        }
-        
-        if (novoMedico == null) {
-            JOptionPane.showMessageDialog(this, "Selecione um medico");
             return;
         }
         
@@ -228,17 +179,16 @@ public class PanelEditarConsulta extends javax.swing.JPanel {
         return;
         }
         
-        Consulta.TipoConsulta tipo;
+        Consulta.typo tipo;
         if (jRadioButton1.isSelected()) {
-            tipo = Consulta.TipoConsulta.NORMAL;
+            tipo = Consulta.typo.NORMAL;
         }   
         else {
-            tipo = Consulta.TipoConsulta.RETORNO;
+            tipo = Consulta.typo.RETORNO;
         }
         
-        consultaOriginal.setData(data);
-        consultaOriginal.setHorario(hora);
-        consultaOriginal.setMedico(novoMedico);
+        consultaOriginal.setData(data.atStartOfDay());
+        consultaOriginal.setHorario(data.atTime(hora));
         consultaOriginal.setPacientes(paciente);
         consultaOriginal.setTipoConsulta(tipo);
 
@@ -251,19 +201,13 @@ public class PanelEditarConsulta extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<Doutor> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
-
-    public void addMedico(Doutor m) {
-    jComboBox1.addItem(m);
-}
 }

@@ -4,12 +4,11 @@
  */
 package clinicaMedica.Paciente;
 
-import clinicaMedica.Model.Paciente.Contato;
-import clinicaMedica.Model.Paciente.Endereco;
-import clinicaMedica.Model.Paciente.Paciente;
-import clinicaMedica.Model.Paciente.PacienteRepository;
+import clinicaMedica.Paciente.Contato;
+import clinicaMedica.Paciente.Endereco;
+import clinicaMedica.Paciente.Paciente;
+import clinicaMedica.Paciente.PacienteRepository;
 import clinicaMedica.Secretaria.PainelSecretaria;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 

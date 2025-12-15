@@ -1,10 +1,12 @@
-# Arquivo do Git para ignorar as class compiladas do NetBens 
+# Arquivo do Git para ignorar arquivos compilados e temporários do NetBeans
 
 # Compiled class files
 *.class
 
 # Log files
 *.log
+derby.log
+derbynet.log
 
 # BlueJ files
 *.ctxt
@@ -12,14 +14,17 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files
-*.jar
+# Package Files (NÃO ignorar lib/*.jar - são necessários)
 *.war
 *.nar
 *.ear
 *.zip
 *.tar.gz
 *.rar
+
+# EXCEÇÃO: Manter as bibliotecas do projeto (essenciais para executar)
+!lib/**/*.jar
+!dist/lib/*.jar
 
 # Virtual machine crash logs
 hs_err_pid*
@@ -32,6 +37,19 @@ dist/
 nbdist/
 .nb-gradle/
 nbactions.xml
+
+# JavaDoc gerado (pode ser regenerado com javadoc)
+docs/
+
+# Banco de dados Derby local (NÃO enviar dados locais)
+clinica_medica/
+DB/
+*.db
+derby.log
+derbynet.log
+
+# Arquivos de exemplo/teste temporários
+sample/
 
 # Maven
 target/

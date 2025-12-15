@@ -4,10 +4,9 @@
  */
 package clinicaMedica.Medico;
 
-import clinicaMedica.Medico.Doutor;
 import clinicaMedica.Consulta.Consulta;
+import clinicaMedica.Consulta.ConsultaRepository;
 import clinicaMedica.Paciente.Paciente;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -76,13 +75,12 @@ public class Receita {
         List<Consulta> todasAsConsultas = listaConsulta.listarConsultas();
 
         for (Consulta consulta : todasAsConsultas) {
-            LocalDate dataConsulta = consulta.getData();
+            LocalDateTime dataConsulta = consulta.getData();
 
-            boolean mesmoDoutor = consulta.getMedico().equals(medico);
             boolean mesmoAno = dataConsulta.getYear() == ano;
             boolean mesmoMes = dataConsulta.getMonthValue() == mes;
 
-            if (mesmoDoutor && mesmoAno && mesmoMes) {
+            if (mesmoAno && mesmoMes) {
                 contador++;
                 Paciente paciente = consulta.getPacientes();
                 relatorio.append(contador + ". " + paciente.getNome() + " (CPF: " + paciente.getCpf() + ")\n");

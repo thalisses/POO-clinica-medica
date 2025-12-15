@@ -42,11 +42,11 @@ public class TestadorRelatorio {
         Endereco endereco1 = new Endereco("rua das acacias", "456", "Liberdade", "Sao paulo", "Sao Paulo", "84323221");
         Contato contato3 = new Contato("44993552449", "439945367845", "PacienteQualquer@gmail.com");
         InfoAdd informacao = new InfoAdd(true, false, true, true, false, "bariatrica", "amendoin", "nao possui");
-
-        Paciente pacienteUm = new Paciente("Maria", "11111111111", "12111970", endereco1, contato3, "Prever", informacao);
-        Paciente pacienteDois = new Paciente("Carlos", "11111111111", "12111970", endereco1, contato3, "Prever", informacao);
-        Paciente pacienteTres = new Paciente("Pedro", "11111111111", "12111970", endereco1, contato3, "Prever", informacao);
-        Paciente pacienteQuatro = new Paciente("Ivone", "11111111111", "12111970", endereco1, contato3, "Prever", informacao);
+        Paciente.tiposConvenios enumConvenio = null;
+        Paciente pacienteUm = new Paciente("Maria", "11111111111", "12111970", endereco1, contato3,enumConvenio, informacao, "Prever");
+        Paciente pacienteDois = new Paciente("Carlos", "11111111111", "12111970", endereco1, contato3,enumConvenio.PARTICULARES, informacao, "Prever");
+        Paciente pacienteTres = new Paciente("Pedro", "11111111111", "12111970", endereco1, contato3, enumConvenio.PARTICULARES, informacao, "Prever");
+        Paciente pacienteQuatro = new Paciente("Ivone", "11111111111", "12111970", endereco1, contato3, enumConvenio.PARTICULARES,informacao, "Prever");
 
         ConsultaRepository repositorioConsultas = new ConsultaRepository();
 
@@ -57,7 +57,6 @@ public class TestadorRelatorio {
         Consulta c1 = new Consulta(
             LocalDateTime.of(2025, 10, 5, 9, 0),
             LocalDateTime.of(2025, 10, 5, 9, 0),
-            drHouse,
             pacienteUm,
             Consulta.typo.NORMAL
         );
@@ -66,7 +65,6 @@ public class TestadorRelatorio {
         Consulta c2 = new Consulta(
             LocalDateTime.of(2025, 10, 20, 11, 30),
             LocalDateTime.of(2025, 10, 20, 11, 30),
-            drHouse,
             pacienteDois,
             Consulta.typo.RETORNO
         );
@@ -75,7 +73,6 @@ public class TestadorRelatorio {
         Consulta c3 = new Consulta(
             LocalDateTime.of(2025, 11, 1, 10, 0),
             LocalDateTime.of(2025, 11, 1, 10, 0),
-            drHouse,
             pacienteTres,
             Consulta.typo.NORMAL
         );
@@ -84,7 +81,6 @@ public class TestadorRelatorio {
         Consulta c4 = new Consulta(
             LocalDateTime.of(2024, 10, 5, 14, 0),
             LocalDateTime.of(2024, 10, 5, 14, 0),
-            drHouse,
             pacienteUm,
             Consulta.typo.NORMAL
         );
@@ -93,7 +89,6 @@ public class TestadorRelatorio {
         Consulta c5 = new Consulta(
             LocalDateTime.of(2025, 10, 15, 16, 0),
             LocalDateTime.of(2025, 10, 15, 16, 0),
-            drGrey,
             pacienteQuatro,
             Consulta.typo.NORMAL
         );

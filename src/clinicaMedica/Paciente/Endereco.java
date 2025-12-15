@@ -4,34 +4,31 @@
  */
 package clinicaMedica.Paciente;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 /**
  * Classe que representa o endereço de um paciente,
  * contendo informações como rua, número, bairro, cidade, estado e CEP.
  */
 
-@Entity
-@Table(name = "endereco")
+import javax.persistence.*;
+
+@Entity 
+@Table(name = "tb_endereco")
 public class Endereco {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id; 
+    
     /** Nome da rua do endereço */
-    @Column(length = 100, nullable = false)
+    @Column(nullable = false, length = 100)
     private String rua;
     
     /** Número do endereço */
-    @Column(length = 20, nullable = false)
+    @Column(length = 10)
     private String numero;
     
     /** Bairro do endereço */
-    @Column(length = 50, nullable = false)
+    @Column(length = 100)
     private String bairro;
     
     /** Cidade do endereço */
@@ -69,11 +66,7 @@ public class Endereco {
         this.estado = estado;
         this.cep = cep;
     }
-    
-    public Long getId(){
-        return id;
-    }
-    
+
     /** @return nome da rua */
     public String getRua() {
         return rua;

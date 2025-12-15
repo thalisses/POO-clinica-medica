@@ -6,20 +6,44 @@ package clinicaMedica.Medico;
 
 import clinicaMedica.Paciente.Paciente;
 import java.time.LocalDate;
+import javax.persistence.*;
 
 /**
  * Classe que representa o prontuário médico de um paciente,
  * contendo informações sobre sintomas, diagnóstico e prescrição.
  */
+@Entity
+@Table(name = "tb_prontuario")
 public class Prontuario {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    
+    @Column(nullable = false)
     private LocalDate dataAtendimento;
+    
+    @ManyToOne
+    @JoinColumn(name = "paciente_id")
     private Paciente paciente;
+    
+    @Column
     private boolean receita;
+    
+    @Column(length = 500)
     private String sintomas;
+    
+    @Column(length = 500)
     private String diagnostico;
+    
+    @Column(length = 500)
     private String prescricaoTratamento;
+
+    /**
+     * Construtor vazio necessário para JPA.
+     */
+    public Prontuario() {
+    }
 
     /**
      * Construtor da classe Prontuario.

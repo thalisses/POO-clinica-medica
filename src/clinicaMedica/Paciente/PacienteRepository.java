@@ -8,17 +8,21 @@ import javax.persistence.*;
 import java.util.List;
 
 /**
- * Classe responsável por armazenar e gerenciar os pacientes do sistema.
+ * Repositório para gerenciamento de pacientes utilizando JPA.
+ * Implementa o padrão Singleton para garantir uma única instância do repositório.
+ * Responsável por operações CRUD (Create, Read, Update, Delete) de pacientes.
  */
 public class PacienteRepository {
     
+    /** Factory para criação de EntityManagers conectados ao banco de dados. */
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("ConsultorioPU");
 
-    /** Instância única da classe (padrão Singleton) */
+    /** Instância única da classe (padrão Singleton). */
     private static PacienteRepository instancia;
 
     /**
      * Retorna a instância única do repositório.
+     * 
      * @return instância de PacienteRepository
      */
     public static PacienteRepository getInstancia() {
@@ -29,13 +33,15 @@ public class PacienteRepository {
     }
 
     /**
-     * Construtor Vazio.
+     * Construtor vazio.
+     * Utilize o método getInstancia() para obter a instância única.
      */
     public PacienteRepository() {}
 
     /**
-     * Adiciona um novo paciente à lista.
-     * @param paciente paciente a ser adicionado
+     * Persiste um novo paciente no banco de dados.
+     * 
+     * @param paciente objeto Paciente a ser persistido
      */
     public void adicionarPaciente(Paciente paciente) {
         EntityManager em = emf.createEntityManager();
@@ -50,8 +56,9 @@ public class PacienteRepository {
     }
 
     /**
-     * Atualiza as informações de um paciente existente.
-     * @param paciente paciente atualizado
+     * Atualiza as informações de um paciente existente no banco de dados.
+     * 
+     * @param paciente objeto Paciente com dados atualizados
      */
     public void atualizarPaciente(Paciente paciente) {
         EntityManager em = emf.createEntityManager();
@@ -66,8 +73,10 @@ public class PacienteRepository {
     }
 
     /**
-     * Remove um paciente do repositório pelo CPF.
-     * @param cpf CPF do paciente a ser removido
+     * Remove um paciente do banco de dados pelo CPF.
+     * O CPF será formatado automaticamente antes da busca.
+     * 
+     * @param cpf CPF do paciente a ser removido (pode estar formatado ou não)
      */
     public void removerPaciente(String cpf) {
         EntityManager em = emf.createEntityManager();
@@ -92,8 +101,9 @@ public class PacienteRepository {
     }
 
     /**
-     * Retorna uma lista com todos os pacientes cadastrados.
-     * @return lista de pacientes
+     * Retorna todos os pacientes cadastrados no banco de dados.
+     * 
+     * @return lista de todos os pacientes (vazia se não houver pacientes)
      */
     public List<Paciente> listarPacientes() {
         EntityManager em = emf.createEntityManager();
